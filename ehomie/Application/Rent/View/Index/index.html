@@ -1,0 +1,120 @@
+<extend name="$_home_public_layout"/>
+
+<block name="style">
+    <style type="text/css" media="screen">
+        .thumbnail .cover {
+            width: 100%;
+            height: 180px;
+        }
+        .thumbnail h3 {
+            font-size: 16px;
+            margin: 5px 0;
+            height: 40px;
+            line-height: 1.3;
+        }
+    </style>
+</block>
+
+<block name="main">
+    <div class="container">
+        <div class="panel">
+            <div class="panel-body">
+                <!--筛选列表-->
+                <div class="query-list">
+                    <!--搜索框-->
+                    <form role="search" action="{:U('')}">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="请输入关键字" name="keyword" value="{$_GET['keyword']}">
+                                <a type="submit" class="input-group-addon search-btn"><i class='fa fa-search'></i></a>
+                            </div>
+                        </div>
+                    </form><br>
+                    <div class="clearfix query-row">
+                        <div class="query-title">区域:</div>
+                        <div class="query-content">
+                            <ul class="list-unstyled list-inline">
+                                <li class="all"><a class="query-link" href="#" data-name="suburb" data-value="all">全部</a></li>
+                                <volist name="suburb_list" id="suburb">
+                                    <li <?php if ($_GET['suburb'] == $key) { echo 'class="active"';}?>>
+                                        <a class="query-link" href="#" data-name="suburb" data-value="{$key}">{$suburb}</a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix query-row">
+                        <div class="query-title">价格:</div>
+                        <div class="query-content">
+                            <ul class="list-unstyled list-inline">
+                                <li class="all"><a class="query-link" href="#" data-name="price" data-value="all">全部</a></li>
+                                <volist name="room_price_list" id="price">
+                                    <li <?php if ($_GET['price'] == $key) { echo 'class="active"';}?>>
+                                        <a class="query-link" href="#" data-name="price" data-value="{$key}">{$price}</a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix query-row">
+                        <div class="query-title">户型:</div>
+                        <div class="query-content">
+                            <ul class="list-unstyled list-inline">
+                                <li class="all"><a class="query-link" href="#" data-name="huxing" data-value="all">全部</a></li>
+                                <volist name="room_huxing_list" id="huxing">
+                                    <li <?php if ($_GET['huxing'] == $huxing) { echo 'class="active"';};?>>
+                                        <a class="query-link" href="#" data-name="huxing" data-value="{$key}">{$huxing}</a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="clearfix query-row">
+                        <div class="query-title">配置:</div>
+                        <div class="query-content">
+                            <ul class="list-unstyled list-inline">
+                                <li class="all"><a class="query-link" href="#" data-name="common" data-value="all">全部</a></li>
+                                <volist name="room_common_list" id="common">
+                                    <li <?php if ($_GET['common'] == $key) { echo 'class="active"';}?>>
+                                        <a class="query-link" href="#" data-name="common" data-value="{$key}">{$common}</a>
+                                    </li>
+                                </volist>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 房间列表 -->
+        <div class="row">
+            <volist name="data_list" id="rl">
+                <div class="col-xs-12 col-sm-4 col-md-3 col-lg-3">
+                    <div class="thumbnail">
+                        <a href="{:U('Rent/Index/detail', array('id' => $rl['id']))}" title="{$rl.title}">
+                            <img class="lazy cover img-responsive" data-src="{$rl.cover_url}">
+                        </a>
+                        <div class="caption">
+                            <h3>{$rl.title_url}</h3>
+                            <p>
+                                <span>
+                                    <span class="fa fa-location-arrow text-muted"></span>
+                                    <span>{$rl.rent.address}</span>
+                                </span>
+                                <span class="pull-right">
+                                    <span class="text-danger"><b>¥ {$rl.price}</b></span>
+                                    <span>元/月</span>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </volist>
+        </div>
+
+        <!-- 分页 -->
+        <div class="text-center">
+            <ul class="pagination">{$page}</ul>
+        </div>
+    </div>
+</block>

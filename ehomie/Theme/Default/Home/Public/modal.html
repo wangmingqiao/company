@@ -1,0 +1,548 @@
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/bootstrap_validator/css/bootstrapValidator.min.css">
+<style type="text/css">
+	.modal-dialog {
+        width: 500px;
+    }
+    #find-roommate-modal #upload-avatar {
+        font-size: 30px;
+        cursor: pointer;
+    }
+    @media(min-width: 769px) {
+        .room-modal .modal-dialog {
+            width: 940px;
+        }
+        .room-modal .show-content__item,
+        .room-modal .show-content__item_img,
+        .room-modal .show-nav {
+            height: 423px !important;
+        }
+        .info-label {
+            position: absolute;
+            right: 0;
+            bottom: 70px;
+            background: #000;
+            opacity: 0.6;
+            color: #fff;
+            width: 170px;
+            padding: 10px;
+        }
+        .info-label > div {
+            padding: 5px 10px;
+        }
+        .info-label > div img {
+            margin-right: 10px;
+        }
+        .datetimepicker td, .datetimepicker th {
+            width: auto;
+        }
+        .fa-plus-circle {
+            font-size: 25px;
+        }
+        #find-roommate-modal label {
+            padding-top: 5px;
+            padding-bottom: 4px;
+        }
+    }
+</style>
+
+<!-- 登录模态框 -->
+<div class="modal fade login-modal-yxyj" id="login-modal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" aria-hidden="true" style="width: 402px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">用户登录</h4>
+            </div>
+            <div class="modal-body" style="width: 85%;margin:auto;">
+                <div class="logo-img">
+                    <img src="__HOME_IMG__/yxyk/text/logo/异乡逸家网页图标.png">
+                </div>
+                <form action="{:U('User/User/login', null, true, true)}" method="POST" class="form login-form-model" role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="邮箱" name="account">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control " placeholder="请输入密码" name="password">
+                    </div>
+                    <div class="form-group clearfix">
+                        <label class="checkbox-inline" for="remember-login">
+                            <input id="remember-login" type="checkbox" name="remember_login" checked="checked">
+                            <span>保持登录</span>
+                        </label>
+                        <a class="text-muted pull-right" href="{:U('User/User/resetPassword', null, true, true)}">忘记密码？</a>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-orange btn-block submit ajax-post" target-form="login-form-model">登录</button>
+                    </div>
+                    <p>还没有账户？<a data-toggle="modal" data-dismiss="modal" href="#register-modal">立即注册</a></p>
+                    <div class="form-group">
+                        {:hook('SyncLogin')} <!-- 第三方登陆钩子 -->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 注册模态框 -->
+<div class="modal fade register-modal-yxyj" id="register-modal" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog"  aria-hidden="true" style="width: 402px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">用户注册</h4>
+            </div>
+            <div class="modal-body" style="width: 85%;margin:auto;">
+                <div class="logo-img">
+                    <img src="__HOME_IMG__/yxyk/text/logo/异乡逸家网页图标.png">
+                </div>
+                <!-- 后台管理员允许注册方式才会显示 -->
+                <php>
+                    $allow_reg_type = C('user_config.allow_reg_type');
+                    $user_type_list = D('User/Type')->where('status = 1')->select();
+                </php>
+                <?php if(count($allow_reg_type) !== 1): ?>
+                    <ul class="nav nav-pills nav-justified nav-justified-xs">
+                        <php>if(in_array('username', $allow_reg_type)):</php>
+                            <li data-tab="reg1" <php>if($allow_reg_type[0] === 'username') echo 'class="active"';</php>>
+                                <a href="#reg1" data-toggle="tab">用户名注册</a>
+                            </li>
+                        <php>endif;</php>
+                        <php>if(in_array('email', $allow_reg_type)):</php>
+                            <li data-tab="reg2" <php>if($allow_reg_type[0] === 'email') echo 'class="active"';</php>>
+                                <a href="#reg2" data-toggle="tab">邮箱注册</a>
+                            </li>
+                        <php>endif;</php>
+                        <php>if(in_array('mobile', $allow_reg_type)):</php>
+                            <li data-tab="reg3" <php>if($allow_reg_type[0] === 'mobile') echo 'class="active"';</php>>
+                                <a href="#reg3" data-toggle="tab">手机号注册</a>
+                            </li>
+                        <php>endif;</php>
+                    </ul>
+                <?php endif; ?>
+                <div class="form-group"></div>
+                <div class="tab-content">
+                    <php>if(in_array('username', $allow_reg_type)):</php>
+                        <div id="reg1" class="tab-pane <?php if($allow_reg_type[0] === 'username') echo "active"; ?>">
+                            <form action="{:U('User/User/register', null, true, true)}" method="post" class="form reg-form-username-modal">
+                                <fieldset>
+                                    <?php if(count($user_type_list) !== 1): ?>
+                                        <div class="form-group">
+                                            <volist name="user_type_list" id="utype">
+                                                <label class="radio-inline">
+                                                    <input type="radio" class="radio" name="user_type" value="{$utype.id}"> {$utype.title}
+                                                </label>
+                                            </volist>
+                                        </div>
+                                    <?php else: ?>
+                                        <input type="hidden" name="user_type" value="{$user_type_list[0]['id']}">
+                                    <?php endif; ?>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="username" placeholder="请输入用户名">
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="verify" placeholder="请输入验证码">
+                                            <span class="input-group-addon verifyimg-box">
+                                                <img class="verifyimg reload-verify" alt="验证码" src="{:U('User/User/verify')}" title="点击刷新">
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span>点击下一步表示同意<a data-toggle="modal" href='#user_protocol-modal'>用户协议</a></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="reg_type" value="username">
+                                        <button class="btn btn-primary btn-pill btn-block submit ajax-post" type="submit" target-form="reg-form-username-modal">下 一 步</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    <php>endif;</php>
+                    <php>if(in_array('email', $allow_reg_type)):</php>
+                        <div id="reg2" class="tab-pane <?php if($allow_reg_type[0] === 'email') echo "active"; ?>">
+                            <form action="{:U('User/User/register', null, true, true)}" method="post" class="form reg-form-email-modal">
+                                <fieldset>
+                                   <?php if(count($user_type_list) !== 1): ?>
+                                        <div class="form-group" style="display:none">
+                                            <volist name="user_type_list" id="utype">
+                                                <label class="radio-inline">
+                                                    <input type="radio" class="radio" name="user_type" value="{$utype.id}"> {$utype.title}
+                                                </label>
+                                            </volist>
+                                        </div>
+                                    <?php else: ?>
+                                        <input type="hidden" name="user_type" value="{$user_type_list[0]['id']}">
+                                    <?php endif; ?>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="email" placeholder="请输入邮箱">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="verify" placeholder="请输入验证码">
+                                            <span class="input-group-btn">
+                                                <button type="button" data-title='用户注册' class="btn btn-default send-mail-verify" style="border-radius:0px;">发送邮件验证码</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" placeholder="请设置密码">
+                                    </div>
+                                    <div class="form-group">
+                                        <span>点击注册表示同意<a data-toggle="modal" href='#user_protocol-modal'>隐私条款</a></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="reg_type" value="email">
+                                        <button class="btn btn-orange btn-pill btn-block submit ajax-post" type="submit" target-form="reg-form-email-modal">注册</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    <php>endif;</php>
+                    <php>if(in_array('mobile', $allow_reg_type)):</php>
+                        <div id="reg3" class="tab-pane <?php if($allow_reg_type[0] === 'mobile') echo "active"; ?>">
+                            <form action="{:U('User/User/register', null, true, true)}" method="post" class="form reg-form-mobile-modal">
+                                <fieldset>
+                                    <?php if(count($user_type_list) !== 1): ?>
+                                        <div class="form-group">
+                                            <volist name="user_type_list" id="utype">
+                                                <label class="radio-inline">
+                                                    <input type="radio" class="radio" name="user_type" value="{$utype.id}"> {$utype.title}
+                                                </label>
+                                            </volist>
+                                        </div>
+                                    <?php else: ?>
+                                        <input type="hidden" name="user_type" value="{$user_type_list[0]['id']}">
+                                    <?php endif; ?>
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="mobile" placeholder="请输入手机号">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" name="verify" placeholder="请输入验证码">
+                                            <span class="input-group-btn">
+                                                <button type="button" class="btn btn-default send-mobile-verify">发送短信验证码</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" class="form-control" name="password" placeholder="请输入密码">
+                                    </div>
+                                    <div class="form-group">
+                                        <span>点击下一步表示同意<a data-toggle="modal" href='#user_protocol-modal'>用户协议</a></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="hidden" name="reg_type" value="mobile">
+                                        <button class="btn btn-primary btn-pill btn-block submit ajax-post" type="submit" target-form="reg-form-mobile-modal">下 一 步</button>
+                                    </div>
+                                </fieldset>
+                            </form>
+                        </div>
+                    <php>endif;</php>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 委托找房模态框 -->
+<div class="modal fade" id="wtzf" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog"  aria-hidden="true" style='width: 450px;'>
+        <div class="modal-content">
+            <div class="modal-header" style="background-image:url(__HOME_IMG__/yxyk/text/logo/委托.png);height:150px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">
+                </h4>
+            </div>
+            <div class="modal-body"  style="width:90%;margin:auto;">
+                <p style="color:#aaa;">
+                    请您填写以下委托找房的信息，在您提交后24小时内，小e会与您确认！
+                </p>
+                <form action="{:U('Rent/Entrust/index', null, false, false)}" method="POST" role="form" class="entrust-modal">
+                    <div class="form-group has-error">
+                        <input type="text" class="form-control" placeholder="姓名(必填)" name="name">
+                    </div>
+                    <div class="form-group row has-error">
+                        <div class="col-xs-4">
+                            <input type="text" class="form-control" placeholder="区号(必填)" name="area_code">
+                        </div>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" placeholder="电话(必填)" name="mobile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="邮箱" name="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="微信(建议填写)" name="weixin">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="QQ" name="qq">
+                    </div>
+                    <div class="form-group">
+                        <p>看房种类(必选)</p>
+                        <div class="radio-inline cui-control cui-radio">
+                            <label for="kfzl">
+                                <input type="radio" id="kfzl" class="radio" name="type" value="remote">
+                                <span class="cui-control-indicator"></span>
+                                <span>远程看房</span>
+                            </label>
+                        </div>
+                        <div class="radio-inline cui-control cui-radio">
+                            <label for="kfzl2">
+                                <input type="radio" id="kfzl2" class="radio" name="type" value="local">
+                                <span class="cui-control-indicator"></span>
+                                <span>实地看房</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-orange submit ajax-post" style="width:126px;" target-form="entrust-modal">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div><!-- entrust modal end -->
+</div>
+
+<!-- 找室友 -->
+<div class="modal fade" id="find-roommate-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">请填写以下信息，小e客服会通过添加您的微信邀请您到该公寓的潜在室友微信群</h4>
+            </div>
+            <div class="modal-body" style="padding: 20px 40px;">
+                <form action="{:U('Rent/Roommate/index')}" method="POST" class="form-horizontal form-roommate" role="form">
+                    <input type="hidden" name='rid' value='{$info["id"]}'>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">昵称</label>
+                        <div class="col-sm-9">
+                            <input type="text" class='form-control' name="nickname" value="{$roomate_info['nickname']}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">性别</label>
+                        <div class="col-sm-9">
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" value="1" <?php if($roomate_info['gender'] == '1') echo'checked'; ?>> 男
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="gender" value="-1" <?php if($roomate_info['gender'] == '-1') echo'checked'; ?>> 女
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">微信号</label>
+                        <div class="col-sm-9">
+                            <input type="text" class='form-control' name="wechat" value="{$roomate_info['wechat']}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">生日标签</label>
+                        <div class="col-sm-9">
+                            <input type="text" class='form-control' name="birthday_tag" value="{$roomate_info['birthday_tag']}" placeholder="如：85后、90后">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">职业</label>
+                        <div class="col-sm-9">
+                            <input type="text" class='form-control' name="occupation" value='{$roomate_info["occupation"]}' placeholder="如：NYU学生、IT狗、投行">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-sm-3">兴趣爱好</label>
+                        <div class="col-sm-9">
+                            <input type="text" class='form-control' name="hobby" value="{$roomate_info['hobby']}" placeholder="如：足球、狼人杀">
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-orange btn-block ajax-post" target-form='form-roommate' style="width: 60%;margin:auto;">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 立即咨询模态框 -->
+<div class="modal fade" id="consult-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" style='width: 450px;'>
+        <div class="modal-content">
+            <div class="modal-header" style="background-image:url(__HOME_IMG__/yxyk/text/logo/委托.png);height:150px;">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" style="width: 90%;margin:auto;">
+                <p style="color:#aaa;">
+                    请您填写一下咨询看房的信息，在你提交后24小时内，小e顾问将与您确认看房或进行预订!
+                </p>
+                <form action="{:U('Rent/Consult/index', null, false, false)}" method="POST" role="form" class="reserve-modal">
+                    <input type="hidden" name="rid" value="{$info['id']}">
+                    <div class="form-group has-error">
+                        <input type="text" class="form-control" placeholder="姓名(必填)" required="required" name="name" value="{$consult_info['name']}">
+                    </div>
+                    <div class="form-group row has-error">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" placeholder="区号(必填)" required="required" name="area_code" value="{$consult_info['area_code']}">
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control" placeholder="电话(必填)" required="required" name="mobile" value="{$consult_info['mobile']}">
+                        </div>
+                    </div>
+                    <div class="form-group dropdown">
+                        <div class="input-group date" data-date-min-view-mode='0'>
+                            <input type="text" class="form_datetime form-control" placeholder="预计入住日期" name="rent_date">
+                            <div class="input-group-addon">
+                                <span class="fa fa-calendar"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="感兴趣的公寓号码" name="number" readonly>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" value="{$consult_info['email']}" placeholder="邮箱" name="email">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="微信（建议填写）" name="wechat" value="{$consult_info['wechat']}">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="推荐优惠码" name="code">
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" rows="3" name="comment" value='{$consult_info["comment"]}' placeholder="如果您有其他实地看房或视频看房问题，请填写"></textarea>
+                    </div>
+                    <div class="form-group text-center">
+                        <button type="submit" class="btn btn-orange  submit ajax-post" style="width:126px;" target-form="reserve-modal">提交</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <volist name='info["room_list"]' id="vo">
+    <!-- 详情展示模态框 -->
+    <div class="modal fade room-modal" id="room-modal{$i}" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" aria-hidden="true" style='width: 970px;height: 423px;'>
+            <div class="modal-content" style='padding:15px'>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 style='color: #ff7733;'>{$vo['number']}</h4>
+                    <p>{$vo['bedroom_count']} | {$vo['bathroom_count']}</p>
+                </div>
+                <div class="modal-body" style="padding:0;">
+                    <!-- VR、视频、图片展示区 -->
+                    <div class="container-fluid" style="background-color: #fff;">
+                        <div class="row">
+                            <div class="col-sm-10 pos-r" style="padding: 0;width: 752px;">
+                                <div class="tab-content show-content">
+                                    <!-- 视频 -->
+                                    <notempty name="vo['video']">
+                                        <div role="tabpanel" class="tab-pane mediaLoading show-content__item active" id="modal{$i}-video"></div>
+                                    </notempty>
+                                    <!-- VR -->
+                                    <notempty name='vo["vr"]'>
+                                        <div role="tabpanel" class="tab-pane show-content__item" id="modal{$i}-VR"></div>
+                                    </notempty>
+                                    <!-- 实景图 -->
+                                    <div role="tabpanel" class="tab-pane show-content__item  <?php if($vo['vr'] == '' && $vo['video'] == '') echo 'active' ;?>" id="modal{$i}-effect">
+                                        <div id="modal{$i}-real-carousel" class="carousel slide" data-ride="carousel" >
+                                            <div class="carousel-inner">
+                                                <volist name="vo['img_real_url']" id="v" key="k">
+                                                    <div class="item <php> if($k==1) echo 'active';</php>">
+                                                        <img class="show-content__item_img" src="{$v}" alt="">
+                                                    </div>
+                                                </volist>
+                                            </div>
+
+                                            <!-- 幻灯片导航 -->
+                                            <ol class="carousel-indicators">
+                                                <volist name="vo['img_real_url']" id='a' key="k">
+                                                    <li class="<php> if($k==1) echo 'active';</php>" data-target="#modal{$i}-real-carousel" data-slide-to="<?php echo $k-1; ?>"></li>
+                                                </volist>
+                                            </ol>
+
+                                            <!-- 左右切换按钮 -->
+                                            <a class="left carousel-control hidden-xs" href="#modal{$i}-real-carousel" data-slide="prev"><span class="fa fa-chevron-left"></span></a>
+                                            <a class="right carousel-control hidden-xs" href="#modal{$i}-real-carousel" data-slide="next"><span class="fa fa-chevron-right"></span></a>
+                                        </div>
+                                    </div>
+                                    <!-- 户型图 -->
+                                    <div role="tabpanel" class="tab-pane show-content__item" id="modal{$i}-structure">
+                                        <div id="modal{$i}-structure-carousel" class="carousel slide" data-ride="carousel" >
+                                            <div class="carousel-inner">
+                                                <volist name="vo['img_structure_url']" id="v" key="k">
+                                                    <div class="item <php> if($k==1) echo 'active';</php>">
+                                                        <img class="show-content__item_img" src="{$v}" alt="">
+                                                    </div>
+                                                </volist>
+                                            </div>
+
+                                            <!-- 幻灯片导航 -->
+                                            <ol class="carousel-indicators">
+                                                <volist name="vo['img_structure_url']" id='v' key="k">
+                                                    <li class="<php> if($k==1) echo 'active';</php>" data-target="#modal{$i}-structure-carousel" data-slide-to="<?php echo $k - 1; ?>"></li>
+                                                </volist>
+                                            </ol>
+
+                                            <!-- 左右切换按钮 -->
+                                            <a class="left carousel-control hidden-xs" href="#modal{$i}-structure-carousel" data-slide="prev"><span class="fa fa-chevron-left"></span></a>
+                                            <a class="right carousel-control hidden-xs" href="#modal{$i}-structure-carousel" data-slide="next"><span class="fa fa-chevron-right"></span></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2" style="padding: 0;width: 186px;">
+                                <ul class="nav nav-tabs nav-stacked show-nav" role="tablist">
+                                    <notempty name="vo['video']">
+                                        <li role="presentation" class="show-nav__item"><a class="show-nav__item_a text-center">视频看房</a></li>
+                                        <li role="presentation" class="show-nav__item active"><a class="show-nav__item_a text-center" href="#modal{$i}-video" role="tab" data-toggle="tab"><i class='fa fa-youtube-play'></i>&nbsp;&nbsp; 实景视频</a></li>
+                                    </notempty>
+                                    <notempty name="vo['vr']">
+                                        <li role="presentation" class="show-nav__item"><a class="show-nav__item_a text-center">VR看房</a></li>
+                                        <li role="presentation" class="show-nav__item"><a  href="#modal{$i}-VR" class="show-nav__item_a text-center" role="tab" data-toggle="tab"><i class='fa fa-video-camera'></i>&nbsp;&nbsp; 实景房</a></li>
+                                    </notempty>
+                                    <li role="presentation" class="show-nav__item"><a class="show-nav__item_a text-center">公寓相册</a></li>
+                                    <li role="presentation" class="show-nav__item  <?php if($vo['vr'] == '' && $vo['video'] == '') echo 'active' ;?>"><a class="show-nav__item_a text-center" href="#modal{$i}-effect" role="tab" data-toggle="tab"><i class='fa fa-tree'></i>&nbsp;&nbsp;实景图</a></li>
+                                    <li role="presentation" class="show-nav__item"><a class="show-nav__item_a text-center" href="#modal{$i}-structure" role="tab" data-toggle="tab"><i class='fa fa-building'></i>&nbsp;&nbsp; 户型图</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div><!-- VR、视频、图片展示区 end -->
+                </div>
+            </div>
+        </div>
+    </div>
+</volist>
+
+
+<script type="text/javascript">
+    $(function(){
+        $('.has-error').each(function(index, el) {
+            if($(this).find('input').val()) {
+                $(this).removeClass('has-error').addClass('has-success');
+            }
+        });
+        $(document).delegate('.has-error input', 'blur', function(event) {
+            if($(this).val() != '') {
+                $(this).parents('.form-group').find('input').each(function(index, el) {
+                    if($(this).val() == '') {
+                        exit;
+                    } else {
+                        $(this).parents('.form-group').removeClass('has-error').addClass('has-success');
+                    }
+                });
+            }
+        });
+        $(document).delegate('.has-success input', 'blur', function(event) {
+            if($(this).val() == '') {
+                console.log($(this).val());
+                $(this).parents('.form-group').removeClass('has-success').addClass('has-error');
+            }
+        });
+    })
+</script>

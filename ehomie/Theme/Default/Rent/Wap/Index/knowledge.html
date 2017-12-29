@@ -1,0 +1,133 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style position="page">
+    	.badge {
+            background-color: #ff7733;
+            margin-right: 10px;
+        }
+        .gray {
+            color: #888;
+            margin-left: 27px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content infinite-scroll">
+        	<div class="content-block no-margin">
+                <div class="content-block-inner">
+                    <h3><span class="badge">1</span>纽约租房区域有哪些?</h3>
+                    <p class="gray">
+                        纽约共有五大区域: 曼哈顿Manhattan，布鲁克林Brooklyn，皇后区Queens，The Bronx和Staten Island。新泽西州New Jersey的Newport等区域到曼哈顿交通便利，也是纽约租房的热门选择。
+                        <br><br>
+                        以下为各个区域的详细划分：<br>
+                        曼哈顿<br>
+                        曼哈顿中城Manhattan Midtown：一般指14街到59街的区域；<br>
+                        曼哈顿下城Manhattan Downtown： 14街以南的区域；<br>
+                        曼哈顿上西城Upper West：西59街到西125街，中央公园以西到哥伦比亚大学区域；<br>
+                        曼哈顿上东城Upper East：东59街到东96街;<br>
+                        罗斯福岛Roosevelt Island：曼哈顿以东，在东河中独立的细长型小岛，隶属于曼哈顿上城行政规划。<br><br>
+
+                        布鲁克林<br>
+                        主城区Downtown Brooklyn：NYU Tandon学院，LIU，Pratt等学校集中区域；<br>
+                        其他区域Clinton Hill（布鲁克林中北部），Park Slope（布鲁克林西北部）、Bay Ridge（布鲁克林西南部），Prospect Park等区域。<br><br>
+
+                        皇后区<br>
+                        长岛市Long Island City：距离曼哈顿最近的区域，地铁交通便利；<br>
+                        其他区域Jackson Heights（杰克逊高地），Elmhurst（艾姆赫斯特），Forest Hills（森林小丘），Flushing（法拉盛）等区域。<br><br>
+
+                        新泽西<br>
+                        靠近Manhattan Downtown的区域：Newport, Jersey City, Hoboken等；<br>
+                        靠近Manhattan Upper West的区域：Fort Lee等；<br>
+                        Newark & Harrison区域: 罗格斯大学Newark校区，新泽西理工大学集中区域。<br><br>
+                    </p>
+                    <h3><span class="badge">2</span>纽约租房有什么要求?</h3>
+                    <p class="gray">
+                        一般来说，公寓的管理公司会审核租房者在美国的收入和信用记录。一般要求年收入为月租的四十到四十五倍。
+                        对于无收入、无信用记录的国际学生，一般采用以下四种方式，不同管理公司要求不同：<br>
+                        a.  由在美国工作的年收入达到月租八十倍的工作人群来作为租房担保人<br>
+                        b.  购买保险公司出售的担保保险，一般为Insurent或The Guarantors（费用大概为1到1.5倍的月租）<br>
+                        c.  经管理公司同意，入住前预付全年租金<br>
+                        d.  经管理公司审核银行存款金额或国内亲属收入后，提供更多的押金<br>
+                    </p>
+                    <h3><span class="badge">3</span>你为什么需要e乡e家？</h3>
+                    <p class="gray">
+                        海外租房市场存在着严重的信息不对称性，价格和可租户型信息更新不及时，申请资料的准备非常繁琐，需要随时与管理公司沟通，本地中介收费较高（通常是一个月月租或年租金的15%）。<br/><br/>
+
+                        e乡e家的纽约公司组建了市场顾问团队，团队成员均有海外留学背景，非常了解海外租房。公司与各大公寓管理公司建立长期合作关系，每天更新最全的租房信息及报价。纽约公司顾问也可以通过提供陪同实地看房，远程视频看房，VR看房等提供准确的房源详情，同时可以方便迅速地为租房的同学处理从申请到入住的所有问题，海外留学租房将变得非常简单。<br/>
+
+                    </p>
+                    <h3><span class="badge">4</span>通过e乡e家的租房流程是什么？</h3>
+                    <p class="gray">
+                        i. 多维选房，通过VR、视频远程看房，或者预约实地看房，选择自己心仪的房子；<br/>
+                        ii. 专属咨询，一对一顾问24小时在线，解答您租房中的问题；<br/>
+                        iii. 智能匹配，依托公司内部信息管理系统，高效迅速地为您匹配室友；<br/>
+                        iv. 申请签约，在订房顾问的协助下，向公寓提交申请和所需资料，通过公寓审查，完成签约；<br/>
+                        v. 配套服务，根据您的特定需求，e乡e家可提供接机、家具、搬家等定制服务和优惠政策，提供完整的入住指南。<br/>
+                    </p>
+                    <h3><span class="badge">5</span>e乡e家有哪些房源？</h3>
+                    <p class="gray">
+                        e乡e家与纽约、新泽西各个公寓的管理公司建立了长期合作关系，数据库拥有数万套出租公寓，所有房源经过数据化分析和专业筛选，提供高性价比、环境安全、经过核实认证的房源。
+                    </p>
+                    <h3><span class="badge">6</span>e乡e家的服务收费？</h3>
+                    <p class="gray">
+                        e乡e家通过与管理公司的企业合作，对客户提供免费服务。
+                    </p>
+                    <h3><span class="badge">7</span>纽约租房需要多少钱?</h3>
+                    <p class="gray">
+                        i. 人均预算小于$800, 可以考虑在Queens, New Jersey, Brooklyn找私人合租房；<br/>
+                        ii. 人均预算$800-$1,000, 建议考虑Newport和罗岛公寓的客厅，或者Queens, Brooklyn部分私人公寓的卧室；<br/>
+                        iii. 人均预算$1,000-$1,500, 可以考虑Newport, 罗岛，哥大附近, Downtown Brooklyn，曼哈顿中下城的次卧或客厅；<br/>
+                        iv. 人均预算$1,500-$2,000, 可以考虑Newport, 罗岛, Downtown Brooklyn豪华公寓主卧，或者曼哈顿豪华公寓次卧；<br/>
+                        v. 人均预算$2,000以上，可以考虑曼哈顿豪华公寓主卧，或者Studio等户型。<br/>
+                    </p>
+                    <h3><span class="badge">8</span>房子里面有家具吗？</h3>
+                    <p class="gray">
+                        由于管理公司公寓 “clean in, clean out”政策，纽约、新泽西大部分新租公寓都不包括家具，大部分同学会选择二手交易，或者在宜家等商城购买适合的家具。
+                    </p>
+                    <h3><span class="badge">9</span>在纽约会住客厅？怎么才能在客厅住人？</h3>
+                    <p class="gray">
+                        由于纽约租金相对较高，客厅住人是很普遍的现象。按照公寓的规定，可以有以下选择：<br/><br/>
+                        a. 打墙。分为打全墙和打半墙，全墙是指在客厅建立一个完整的临时墙，完全封闭并带有进出的门，半墙是指建立临时墙时在顶部留有6到12英尺的空隙，保证室内防火警报正常使用。在搬出时墙壁需要彻底清除，一般打墙公司会负责免费拆除。根据地区和房屋面积不同，价格大概为$800到$1500。<br/>
+                        b. 类墙壁隔断。由打墙公司提供的一种freestanding的隔断方式，一般为书柜样式，不伤害墙壁地板，不封顶，有进出门，外面是平墙面，里面是书柜形式，可以做隔断与存储两用，价格与打墙类似。<br/>
+                        c. 家具隔断。这种方法比较常见，成本较低，在不允许使用临时墙的公寓，可以做到不伤墙壁地板。使用衣柜、书柜、屏风、帘子各类家，方式多样。<br/>
+                        d. EverBlocks。这是一种新型时尚的隔断方式，类似于大型乐高玩具，材质结实耐热，可以根据需要随意拼接，随意拆除。<br/>
+                    </p>
+                    <h3><span class="badge">10</span>如果和室友合租，价格应该如何分配?</h3>
+                    <p class="gray">
+                        纽约、新泽西出租公寓一般都是整套出租，每一个房间分配的月租需要根据户型、朝向、使用面积等因素综合决定，并与室友协商确认。客厅由于隔音和私密性不如卧室，所以一般客厅分摊月租最低。<br/><br/>
+
+                        租金分配的参考标准: 两室两浴及以上，次卧=总租金/(卧室数量+1)，主卧和客厅在次卧基础上下浮动总价的5%；一室一浴分配比例可为55%, 45%；两室一浴由于共用浴室，分配比例可为 38.3%, 33.4%, 28.3%。<br/>
+                    </p>
+                    <h3><span class="badge">11</span>如何找室友?</h3>
+                    <p class="gray">
+                        找室友可以通过学校论坛、微信QQ群、Facebook等方式，还有一些美国人使用的各类室友匹配网站。e乡e家的智能匹配功能，会根据所提供房源偏好、预算、入住时间等其他要求，计算出可以推荐的室友。具体生活习惯、性格爱好、房租分配需要大家与潜在室友进一步确认，以决定是否一起合租。
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+

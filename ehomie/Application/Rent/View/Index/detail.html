@@ -1,0 +1,369 @@
+<extend name="$_home_public_layout"/>
+
+<block name="style">
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/libs/jquery_ad_gallery/css/jquery.ad-gallery.css">
+    <style type="text/css">
+        .rent-detail hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .rent-detail ul li {
+            border-bottom: 1px dashed #ddd;
+            height: 33px;
+            margin-bottom: 13px;
+        }
+        .rent-detail ul li .dt,
+        .rent-detail ul li .colon {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .rent-detail ul li .dd {
+            font-size: 16px;
+        }
+    </style>
+</block>
+
+<block name="jumbotron">
+    <div class="jumbotron jumbotron-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-md-5">
+                    <!-- 橱窗效果 -->
+                    <div id="gallery" class="ad-gallery">
+                        <div class="ad-image-wrapper"> </div>
+                        <div class="ad-nav">
+                            <div class="ad-thumbs">
+                                <ul class="ad-thumb-list">
+                                    <volist name="info.images_url" id="ims">
+                                        <li>
+                                            <a href="{$ims}"><img class="img-responsive" src="{$ims}"></a>
+                                        </li>
+                                    </volist>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12 col-md-7 rent-detail">
+                    <!-- 详情 -->
+                    <h3>{$info.title}</h3>
+                    <hr>
+                    <ul class="text-left list-unstyled">
+                        <li>
+                            <span class="dt" style="letter-spacing: 2em;">租金</span>
+                            <span class="colon">：</span>
+                            <span class="dd">
+                                <span class="text-danger">
+                                    <b>{$info.price}</b>
+                                <span>元/月</span>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dt" style="letter-spacing: 2em;">地址</span>
+                            <span class="colon">：</span>
+                            <span class="dd" id="rent-address">
+                                {$info['rent_info']['suburb'][0]}省
+                                {$info['rent_info']['suburb'][1]}市
+                                {$info['rent_info']['suburb'][2]}
+                                {$info.rent_info.address}
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dt" style="letter-spacing: 2em;">户型</span>
+                            <span class="colon">：</span>
+                            <span class="dd">{$info.huxing}</span>
+                        </li>
+                        <li>
+                            <span class="dt" style="letter-spacing: 2em;">房间</span>
+                            <span class="colon">：</span>
+                            <span class="dd">
+                                <volist name="room_list" id="r">
+                                    <?php if ($info['id'] === $r['id']): ?>
+                                        <a class="btn btn-primary btn-sm">{$r.name}</a>
+                                    <?php else: ?>
+                                        <a class="btn btn-default btn-sm" href="{:U('detail', array('id' => $r['id']))}">{$r.name}</a>
+                                    <?php endif; ?>
+                                </volist>
+                            </span>
+                        </li>
+                        <li>
+                            <span class="dt" style="letter-spacing: 0.5em;">电话咨询</span>
+                            <span class="colon">：</span>
+                            <span class="dd">
+                                <span style="color:#ff3a00; font-size: 18px;">{$info.rent_info.mobile}</span>
+                            </span>
+                        </li>
+                    </ul>
+                    <notempty name="info.rented">
+                        <button class="btn btn-primary btn-lg disabled" disbaled="disabled" data-toggle="modal" data-target="#modal-order"><i class="fa fa-pencil"></i> 已租</button>
+                    <else />
+                        <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modal-order"><i class="fa fa-pencil"></i> 在线预约</button>
+                    </notempty>
+                    <button class="btn btn-warning btn-lg" data-toggle="modal" data-target="#modal-order"><i class="fa fa-cny"></i> 在线缴费</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 在线预约弹窗 -->
+    <div class="modal fade" id="modal-order" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:400px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        在线预约
+                        <span style="color:rgb(247,68,97);font-size: 18px;margin-left: 8em;font-style: italic">{$info.rent_info.mobile}</span>
+                    </h4>
+                </div>
+                <form class="form order-form" action="{:U('Rent/Order/add')}" method="post" accept-charset="utf-8">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>姓名（必填）</label>
+                            <input name="name" class="form-control" type="text" size="50" maxlength="10" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label>联系电话（必填）</label>
+                            <input name="mobile" class="form-control" type="text" size="50" maxlength="11" required="required"/>
+                        </div>
+                        <div class="form-group">
+                            <label>详情</label><br>
+                            <textarea name="abstract" class="form-control" placeholder="你只能输入100个字哦~" maxlength="200"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary ajax-post" target-form="order-form">提交预约</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="main">
+    <div class="container">
+        <!-- 房间基本情况 -->
+        <div class="row" >
+            <div class="col-xs-12 col-md-7">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        房间详情
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td colspan="9" class="text-center">房间列表</td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><b>项目</b></td>
+                                    <td>面积(㎡)</td>
+                                    <td>阳台</td>
+                                    <td>独卫</td>
+                                    <td>飘窗</td>
+                                    <td>空调</td>
+                                    <td>价格(元/月)</td>
+                                    <td>状态</td>
+                                </tr>
+                                <volist name="room_list" id="r">
+                                    <tr>
+                                        <td class="left-string"></td>
+                                        <td style="color:rgb(51,51,51);">{$r.name}</td>
+                                        <td>{$r.size}</td>
+                                        <td>
+                                            <?php
+                                                if (in_array('yt',$r['common'] )) {
+                                                    echo "<span class='fa fa-check-circle text-success'></span>";
+                                                } else {
+                                                    echo "<span class='fa fa-close text-danger'></span>";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                if (in_array('dw',$r['common'] )) {
+                                                    echo "<span class='fa fa-check-circle text-success'></span>";
+                                                } else {
+                                                    echo "<span class='fa fa-close text-danger'></span>";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                if (in_array('pc',$r['common'] )) {
+                                                    echo "<span class='fa fa-check-circle text-success'></span>";
+                                                } else {
+                                                    echo "<span class='fa fa-close text-danger'></span>";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php
+                                                if (in_array('kt',$r['common'] )) {
+                                                    echo "<span class='fa fa-check-circle text-success'></span>";
+                                                } else {
+                                                    echo "<span class='fa fa-close text-danger'></span>";
+                                                }
+                                            ?>
+                                        </td>
+                                        <td>{$r.price}</td>
+                                        <td>
+                                            <eq name="r.rented" value="1">
+                                                已租
+                                            <else/>
+                                                <span class='fa fa-check-circle text-success'></span> 可租
+                                            </eq>
+                                        </td>
+                                    </tr>
+                                </volist>
+                                <tr>
+                                    <td colspan="9" class="text-center">公共设施</td>
+                                </tr>
+                                <tr>
+                                    <td class="left-string"></td>
+                                    <td>
+                                        <?php
+                                            if (in_array('wifi', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        无线wifi
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('cf', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        厨房
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('bx', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        冰箱
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('xyj', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        洗衣机
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('kt', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        客厅
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('rsq', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        热水器
+                                    </td>
+                                    <td>
+                                        <?php
+                                            if (in_array('cz', $info['rent_info']['common'])) {
+                                                echo "<span class='fa fa-check-circle text-success'></span>";
+                                            } else {
+                                                echo "<span class='fa fa-close text-danger'></span>";
+                                            }
+                                        ?>
+                                        餐桌
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-5">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        周边配套
+                    </div>
+                    <div class="panel-body">
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>附近商圈：{$info.rent_info.surrounding_business}</td>
+                                </tr>
+                                <tr>
+                                    <td>附近地铁：{$info.rent_info.surrounding_subway}</td>
+                                </tr>
+                                <tr>
+                                    <td>公交路线：{$info.rent_info.surrounding_bus}</td>
+                                </tr>
+                                <tr>
+                                    <td>超市：{$info.rent_info.surrounding_supermarket}</td>
+                                </tr>
+                                <tr>
+                                    <td>菜场：{$info.rent_info.surrounding_market}</td>
+                                </tr>
+                                <tr>
+                                    <td>医院：{$info.rent_info.surrounding_hospital}</td>
+                                </tr>
+                                <tr>
+                                    <td>餐饮：{$info.rent_info.surrounding_food}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 地图 -->
+        <div class="row">
+            <div class="col-xs-12 panel">
+                <div id="allmap" style="position:static;height:500px;"></div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src="__PUBLIC__/libs/jquery_ad_gallery/js/jquery.ad-gallery.js"></script>
+    <script type="text/javascript" src="__PUBLIC__/libs/bdmap/bdmap.js"></script> 
+    <script type="text/javascript">
+        $(function() {
+            $('.ad-gallery').adGallery({
+                effect: 'fade'
+            });
+            show_map("allmap",{
+                city:'',
+                addr:'{$info.rent_info.address}',
+                title:'{$info.title}',
+                lawfirm:'',
+                tel:'{$info.rent_info.mobile}',
+                mapx:'{$info.rent_info.address_gps}',
+                pic:'',
+                ismove:'0',
+                piobj:''
+            });
+        });
+    </script>
+</block>

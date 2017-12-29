@@ -1,0 +1,45 @@
+<extend name="$_home_public_layout"/>
+
+<block name="style">
+    <style type="text/css">
+        .banner-about{
+            background-image: url(__HOME_IMG__/yxyk/index/{$info.title}.jpg);
+            background-size: cover;
+            width: 100%;
+            height: 500px;
+        }
+        .banner-about p{
+            padding-top: 253px;
+            font-size: 50px;
+            color: #fff;
+            text-align: center;
+        }
+        .panel-about{
+            background-color: #f0f0f0;
+        }
+    </style>
+</block>
+
+<block name="jumbotron">
+    <div class="banner-about">
+        <p>{$info.title}</p>
+    </div>
+</block>
+
+
+<block name="main">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-about">
+                    <article class="article panel-body">
+                        <!-- 文章正文 -->
+                        <div class="article-body">
+                            {$info.content|parse_content}
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

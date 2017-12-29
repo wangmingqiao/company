@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <block name="title"><title>{$meta_title}｜{:C('WEB_SITE_TITLE')}－{:C('WEB_SITE_SLOGAN')}</title></block>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="description" content="{$meta_description}">
+    <meta name="generator" content="CoreThink">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="format-detection" content="telephone=no,email=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="shortcut icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" href="__ROOT__/logo.png">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.min.css">
+    <link rel="stylesheet" type="text/css" href="__CUI__/css/cui.extend.min.css">
+    <link rel="stylesheet" type="text/css" href="__HOME_CSS__/home.css">
+    <style type="text/css">
+        body{
+            font-family: Microsoft Yahei;
+        }
+        /* 顶部栏 */
+        .navbar-exej{
+            background-color: #f4f4f4;
+            border-bottom: 1px solid #999999;
+            margin-bottom: 0px;
+        }
+        .navbar-exej .navbar-header img{
+            height: 44px;
+            margin-top: 0;
+        }
+        .navbar-exej .navbar-right {
+        }
+        .navbar-exej li a{
+            color: #666666;
+            font-size: 18px;
+            padding-top: 25px;
+            height: 74px;
+        }
+        .navbar-exej .navbar-nav li a:hover{
+            color: #fff;
+            background-color: #ff7733;
+        }
+        .main{
+            background-color: #f0f0f0;
+        }
+        /* 侧边栏 */
+        .exej-cbl{
+            position: fixed;
+            right: 0px;
+            top: 238px;
+            z-index: 999;
+        }
+        .exej-cbl li{
+            background-color: #000;
+            color: #999999;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .exej-cbl li a{
+            color: #999999;
+        }
+        .exej-cbl li:hover{
+            background-color: #ff7733;
+            color: #ffffff;
+        }
+        .exej-cbl li span{
+            font-size: 21px;
+            left:9px;
+            top:10px;
+            position: relative;
+        }
+        .exej-cbl li .fa-phone{
+            left:12px;
+        }
+        .exej-cbl li .fa-caret-up{
+            top:0px;
+            left:13px;
+        }
+        .exej-cbl li p{
+            position: relative;
+            top:-6px;
+            left:7px;
+        }
+        .exej-cbl .detail{
+            position: relative;
+            width: 155px;
+            top:-23px;
+            right: 155px;
+            background-color: #000;
+            text-align: center
+        }
+        .exej-cbl .detail p{
+            position: relative;
+            top: 7px;
+            height: 40px;
+            font-size: 17px;
+        }
+        .cui-control input:checked~.cui-control-indicator{
+            background-color: #ff7733;
+            border-color: #ff7733;
+        }
+        .btn-orange{
+            background-color: #ff7733;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: .25rem;
+        }
+        .btn-orange:hover,.btn-orange:active,.btn-orange:focus {
+            background-color: #EB7500;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .btn-orange{
+            background-color: #ff7733;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+
+        .btn-orange a:hover{
+            color: #ffffff;
+            text-decoration: none;
+        }
+        #btn-fbfy{
+            border: 1px solid #ff7733;
+            color: #ff7733;
+            font-size: 14px;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            height: auto;
+            vertical-align: middle;
+        }
+        #btn-fbfy:hover{
+            color:#fff;
+        }
+
+        .logo-img{
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .logo-img img{
+            width: 100px;
+            height: 100px;
+        }
+
+        .rent-tag {
+            cursor: default;
+            position: relative;
+            background: #ff7733;
+            border-radius: 3px 0 0 3px;
+            color: white;
+            display: inline-block;
+            height: 26px;
+            line-height: 26px;
+            padding: 0 20px 0 23px;
+            margin: 0 10px 10px 0;
+            -webkit-transition: color 0.2s;
+            font-size:13px;
+        }
+
+        .rent-tag::before {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+            content: '';
+            height: 6px;
+            left: 10px;
+            position: absolute;
+            width: 6px;
+            top: 10px;
+        }
+
+        .rent-tag::after {
+            background: #fff;
+
+            border-left: 10px solid #ff7733;
+            border-top: 13px solid transparent;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .rent-tag:hover {
+            background-color: #EB7500;
+            color: white;
+        }
+
+        .rent-tag:hover::after {
+            border-left-color: #EB7500; 
+        }
+
+        .footer .footer-icon{
+            background-color:#dcdcdc;
+            color:#333;
+        }
+
+        .for-space{
+        }
+
+    </style>
+    <block name="style">
+    </block>
+    <!--[if lt IE 9]>
+        <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+        <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="__PUBLIC__/libs/jquery/1.x/jquery.min.js"></script>
+    <script type="text/javascript">
+        (function(){
+            var OpenCMF = window.OpenCMF = {
+                "ROOT"   : "__ROOT__", //当前网站地址
+                "APP"    : "__APP__", //当前项目地址
+                "PUBLIC" : "__PUBLIC__", //项目公共目录地址
+                "DEEP"   : "{:C('URL_PATHINFO_DEPR')}", //PATHINFO分割符
+                "MODEL"  : ["{:C('URL_MODEL')}", "{:C('URL_CASE_INSENSITIVE')}", "{:C('URL_HTML_SUFFIX')}"],
+                "VAR"    : ["{:C('VAR_MODULE')}", "{:C('VAR_CONTROLLER')}", "{:C('VAR_ACTION')}"]
+            }
+        })();
+    </script>
+</head>
+
+<body class="{$_page_name}" data-target="#house-publish-menu" data-spy="scroll">
+    <div class="exej-cbl hidden-xs">
+        <ul class="list-unstyled">
+            <li class="bar">
+                <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&amp;uin=3399107531&amp;site=qq&amp;menu=yes"><span class="fa fa-qq"></span></a>
+            </li>
+            <li class="bar">
+                <span class="fa fa-wechat"></span>
+                <div class="detail text-center" style="right:120px;display:none;background-color: #fff;width: 120px;">
+                    <div style="color: #888;">微信客服</div>
+                    <div style="color: #aaa;"><small>请扫描二维码</small></div>
+                    <img src="Theme/Default/Home/Public/img/wechat.jpg" width="100" height="100">
+                </div>
+            </li>
+            <li class="bar">
+                <span class="fa fa-phone"></span>
+                <div class="detail" style="display:none">
+                    <p>+1(917)261-4920&nbsp&nbsp</p>
+                </div>
+            </li>
+            <li onclick="$('body, html').scrollTop(0);"><span class="fa fa-caret-up"></span><p>TOP</p></li>
+        </ul>
+    </div>
+    <block name="full_wrap">
+        <block name="hook_page_header">
+            <div class="clearfix hook hook-page-header">
+                {:hook('PageHeader')} <!-- 文档开始钩子 -->
+            </div>
+        </block>
+
+        <block name="wrap">
+            <div class="clearfix full-wrap">
+                <div class="clearfix full-header">
+                    <block name="header">
+                        <block name="main-nav">
+                            <nav class="navbar navbar-exej" role="navigation">
+                                <div class="container navbar-container">
+                                    <div class="navbar-header">
+                                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                                            <span class="sr-only">Toggle navigation</span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                            <span class="icon-bar"></span>
+                                        </button>
+                                        <a class="navbar-brand" href="{:C('HOME_PAGE')}">
+                                            <img src="__HOME_IMG__/ehomie_logo.png" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="collapse navbar-collapse" id="navbar-collapse">
+                                        <ul class="nav navbar-nav navbar-right">
+                                            <li><a href="{:C('HOME_PAGE')}" style="outline:none;color:#666666;">首页</a></li>
+                                            <li class="nav-item"><a href="{:U('Rent/Index/index')}" style="outline:none;color:#666666;">找房</a></li>
+                                            <li class="nav-item"><a data-toggle="modal" href="#wtzf" style="outline:none; color:#666666;">委托找房</a></li>
+                                            <li class="nav-item"><a href="{:U('Rent/Index/knowledge')}" style="outline:none;color:#666666;">租前需知</a></li>
+                                            <present name="_user_auth">
+                                                <li class="nav-item"><a href="{:U('Rent/Mark/my')}" style="outline:none;color:#666666;">个人中心</a></li>
+                                                <else />
+                                                <li class="nav-item"><a data-toggle="modal" href="#register-modal" style="outline:none;color:#666666;">注册</a></li>
+                                                <li class="nav-item"><a data-toggle="modal" href="#login-modal" style="outline:none;color:#666666;">登录</a></li>
+                                            </present>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </block>
+                    </block>
+                </div>
+
+                <div class="clearfix full-container">
+                    <block name="jumbotron">
+                        <div class="jumbotron jumbotron-primary jumbotron-background main-jumbotron text-center">
+                            <h4>简单、高效、卓越 － <span class="small">互联网WEB产品最佳选择</span></h4>
+                        </div>
+                    </block>
+
+                    <div id="main" class="main">
+                        <block name="main">这里是内容</block>
+                    </div>
+                </div>
+
+                <div class="clearfix full-foooter">
+                    <block name="footer">
+                        <div class="footer">
+                            <div class="text-center">
+                                <div class="footer-list">
+                                    <ul class="list-inline">
+                                        <!-- 底部导航 开始 -->
+                                        <opencmf:nav_list name="vo" pid="0" group="bottom">
+                                            <li><a href="{$vo.href}">{$vo.title}</a></li>
+                                        </opencmf:nav_list>
+                                        <!-- 底部导航 结束 -->
+                                    </ul>
+                                </div>
+                                <div class="icon">
+                                    <ul class="list-inline">
+                                        <li>
+                                            <span class="fa fa-weixin footer-icon" style="padding: 7px 6px;"></span>
+                                        </li>
+                                        <li>
+                                            <a target="_blank" href="http://weibo.com/p/1005055925293474/home?from=page_100505&mod=TAB&is_all=1#place">
+                                                <span class="fa fa-weibo footer-icon"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="https://www.facebook.com/ehomieny/" target="_blank">
+                                                <span class="fa fa-facebook footer-icon" style="padding: 7px 12px 6px 11px;"></span>
+                                            </a>
+                                        </li>
+                                            <a href="https://www.instagram.com/ehomie_newyork/" target="_blank">
+                                                <span class="fa fa-instagram footer-icon" style="padding: 7px 8px;"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <br />
+                                <span class="copyright">{:C('WEB_SITE_COPYRIGHT')}</span>&nbsp;<span style="color:#999">Copyright  &copy; 易乡 (北京) 网络科技有限公司 All rights reserved.</span>
+                            </div>
+                        </div>
+                    </block>
+                </div>
+            </div>
+        </block>
+
+        <div class="clearfix hook hook-page-footer">
+            {:hook('PageFooter')} <!-- 文档末尾钩子 -->
+        </div>
+    </block>
+
+    <block name="full_script">
+        <div class="clearfix full-script">
+            <div class="container-fluid">
+                <include file="./Theme/Default/Home/Public/modal.html" /> <!-- 弹窗 -->
+                <input type="hidden" id="corethink_home_img" value="__HOME_IMG__">
+                <script type="text/javascript" src="__CUI__/js/cui.min.js"></script>
+                <script type="text/javascript" src="__CUI__/js/cui.extend.min.js"></script>
+                <script type="text/javascript" src="__HOME_JS__/home.js"></script>
+                <script type="text/javascript" src="__HOME_JS__/meiqia.js"></script>
+                <script type="text/javascript">
+                    $(function(){
+                        //侧边栏
+                        $(".bar").mouseenter(function(){
+                            $(this).children(".detail").css({"display":"block"});
+                        });
+                        $(".bar").mouseleave(function(){
+                            $(this).children(".detail").css({"display":"none"});
+                        });
+                        $('.navbar-nav.navbar-right li.nav-item').each(function(index, el) {
+                            var href = location.href;
+                            var current_url = $(this).find('a').attr('href');
+                            if(href.indexOf(current_url)>=0) {
+                                $(this).find('a').css({
+                                    color: '#fff',
+                                    background: '#ff7733'
+                                });
+                            }
+                        });
+                        // 底部导航栏
+                        $('.fa-weixin.footer-icon').popover({
+                            html:true,
+                            placement:'top',
+                            trigger:'hover',
+                            content:'<img src="__HOME_IMG__/QRcode.png" width="120"/>'
+                        })
+                    });
+                    
+                </script>
+                <block name="script"></block>
+                {:C('WEB_SITE_STATISTICS')} <!-- 站点统计代码 -->
+            </div>
+        </div>
+    </block>
+</body>
+</html>

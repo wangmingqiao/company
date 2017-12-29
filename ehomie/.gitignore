@@ -1,0 +1,10 @@
+.idea
+*.log
+node_modules/
+/Runtime/
+/Uploads
+!*.md
+!/vendor
+.phpintel
+.fuse_hidden*
+/Data/dev.php

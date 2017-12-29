@@ -1,0 +1,613 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+	<link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+    <style position="page">
+        .list-block .item-title.label {
+            width: 28%;
+        }
+    	/*筛选框*/
+        .filter-show {
+            position: fixed;
+            left: 0px;
+            right: 0px;
+            top: 44px;
+            z-index: 9999;
+        }
+        .filter-hide {
+            display: none;
+        }
+        .picker-item {
+        	font-size: 14px;
+        }
+        /*列表*/
+        .rent-item {
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 3px #aaa;
+        }
+        .rent-item__img_compose {
+        	position: relative;
+        }
+        .rent-item__img_cover {
+            height: 100px;
+            width: 100%;
+        }
+        .rent-item__compose {
+            padding: 3px 10px 8px;
+        }
+        .rent-item__title {
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: inline-block;
+            width: 100%;
+        }
+        .rent-item__bedroom {
+            font-size: 12px;
+            color: #888;
+        }
+        .rent-item__price-label {
+            position: absolute;
+            right: 0px;
+            bottom: 5px;
+            background-color: #333;
+            opacity: 0.7;
+            color: #fff;
+            padding: 0px 6px;
+        }
+        .rent-item__tag {
+        	padding: 3px;
+        	font-size: 5px;
+        	height: auto;
+        	margin-right: 5px;
+        	line-height: normal;
+        }
+        /*地图标点*/
+/*        #map *{
+        	max-height: 100%;
+        	overflow: hidden;
+        }*/
+        .infowindow-img{
+            width: 100%;
+        }
+        .infowindow-img + p{
+            color:#000;
+            font-size: 14px;
+            margin-bottom: 0px;
+        }
+        .infowindow-img + p + ul{
+            margin-bottom: 0px;
+        }
+        .leaflet-div-icon{
+            background:none;
+            border: none;
+            height: auto!important;
+            width: auto!important;
+        }
+        .price_label{
+            background-color: #ff7733;
+            width: auto;
+            padding: 4px 2px;
+            white-space: nowrap;
+            text-align: center;
+            border-radius: 3px;
+            color:#fff;
+            position: relative;
+            left:-25px;
+            top:-15px;
+        }
+        .price_label small {
+            font-size: 5px;
+            position: relative;
+            top: -5px;
+        }
+        .price_label .fa{
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            color: #ff7733;
+            font-size: 20px;
+        }
+        /*拖动条*/
+        .drag-container {
+            /*margin: 10px 0;*/
+            width: 200px;
+            height: 30px;
+            position: relative;
+        }
+        .drag-container__btn_left {
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            background: #fff;
+            display: inline-block;
+            box-shadow: 0px 0px 3px #aaa;
+            position: absolute;
+            left: -15px;
+            cursor: pointer;
+        }
+        .drag-container__bg_gray {
+            position: absolute;
+            display: block;
+            left: 0;
+            right: 0;
+            height:3px;
+            top: calc(50% + 0px);
+            background-color: #ccc;
+        }
+        .drag-container__btn_right {
+            z-index: 10;
+            width: 30px;
+            height: 30px;
+            border-radius: 100%;
+            background: #fff;
+            display: inline-block;
+            box-shadow: 0px 0px 3px #aaa;
+            position: absolute;
+            right: -15px;
+            cursor: pointer;
+        }
+        .drag-container__fill_orange {
+            position: absolute;
+            display: inline-block;
+            top: calc(50% + 0px);
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #ff7733;
+        }
+        .drag-container__price_min {
+            position: absolute;
+            left: 0;
+            bottom: -30px;
+        }
+        .drag-container__price_max {
+            position: absolute;
+            right: 0;
+            bottom: -30px;
+        }
+        /*modal*/
+        .modal {
+            min-width: 320px;
+            margin-left: -45%;
+            border-radius: 0;
+            margin-left: -160px;
+            width: 320px!important;
+        }
+        .modal .modal-inner {
+            border-radius: 0;
+        }
+        .modal .modal-inner .list-block {
+            margin: 15px -15px -15px;
+        }
+
+       .rent-tag {
+            cursor: default;
+            position: relative;
+            background: #ff7733;
+            border-radius: 2px 0 0 2px;
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            padding: 0 10px 0 10px;
+            -webkit-transition: color 0.2s;
+            font-size:8px;
+        }
+
+        .rent-tag::before {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+            content: '';
+            height: 6px;
+            left: 4px;
+            position: absolute;
+            width: 5px;
+            top: 7px;
+        }
+
+        .rent-tag::after {
+            background: #fff;
+            border-left: 10px solid #ff7733;
+            border-top: 13px solid transparent;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .rent-tag:hover {
+            background-color: #EB7500;
+            color: white;
+        }
+
+        .rent-tag:hover::after {
+            border-left-color: #EB7500; 
+        }
+
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content infinite-scroll">
+        	<!-- <php>dump($data_list);</php> -->
+    		<div class="content-block no-margin filter-hide" style='display:block'>
+    			<div class="content-block-inner">
+    				<button class="button button-orange">更多筛选条件</button>
+    			</div>
+    		</div>
+		    <div class="list-block filter-box filter-show no-margin" style='display:none'>
+		    	<form action="{:U('Rent/Index/index')}" class="form-horizontal form-filter">
+    		    	<ul>
+    		    		<li>
+    		    			<div class="item-content">
+    	    			        <div class="item-inner">
+    	    			          	<div class="item-title label">租房区域</div>
+    	    			          	<div class="item-input">
+    	    			          		<input type="text" name='suburb' id='suburb-picker' value="{$_GET['suburb']}" placeholder="点击选择租房区域">
+    	    			          	</div>
+    	    			        </div>
+    	    			     </div>
+    		    		</li>
+    					<li>
+    		    			<div class="item-content">
+    	    			        <div class="item-inner">
+    	    			          	<div class="item-title label">租金范围</div>
+    	    			          	<div class="item-input" style='height: 60px;padding-top: 10px;'>
+                                        <input type="hidden" name='min_price' value='{$_GET["min_price"]}'>
+                                        <input type="hidden" name="max_price" value='{$_GET["max_price"]}'>
+    	    			            	<!-- <input type="text" name='price_range' id='price-picker' value="{$_GET['price_range']}" placeholder="点击选择租金范围"> -->
+                                        <div class='drag-container' id='drag-container'>
+                                            <span class='drag-container__btn_left'></span>
+                                            <span class="drag-container__bg_gray"></span>
+                                            <span class='drag-container__fill_orange'></span>
+                                            <span class='drag-container__btn_right'></span>
+                                            <span class="drag-container__price_min">$0</span>
+                                            <span class="drag-container__price_max">$5000+</span>
+                                        </div>
+    	    			          	</div>
+    	    			        </div>
+    	    			     </div>
+    		    		</li>
+    		    		<li>
+    		    			<div class="item-content">
+    	    			        <div class="item-inner">
+    	    			          	<div class="item-title label">卧室数量</div>
+    	    			          	<div class="item-input">
+    	    			            	<input type="text" name='bedroom_count' id='bedroom-picker' placeholder="点击选择卧室数量">
+    	    			          	</div>
+    	    			        </div>
+    	    			     </div>
+    		    		</li>
+    		    		<li>
+    		    			<div class="item-content">
+    		    				<div class="item-inner">
+                                    <div>
+                                        <a class="button button-orange filter-list">确定</a>
+                                        <a class="button button-default hide-filter">取消</a>
+                                    </div>
+    		    				</div>
+    		    			</div>
+    		    		</li>
+    		    	</ul>
+		    	</form>
+		    </div>
+            
+		    <div class="content-block no-margin">
+		    	<div class="content-block-inner">
+		    		<div class="text-center row">
+		    			<div class="col-60" style='line-height: 27px;'>找不到合适的房源？试试</div>
+		    		    <div class="col-33"><a class="button button-orange entrust-modal">委托找房</a></div>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="content-block no-margin no-padding">
+		    	<div id="map" style="height: 200px;"></div>
+		    </div>
+		    <div class="content-block no-margin">
+		    	<div class="row rent-list">
+		    		<volist name="data_list" id="vo" empty="抱歉，没有找到符合条件的公寓。">
+		    		    <div class="col-50">
+		    		        <div class="rent-item hightlight_marker" data-gps="{$vo['address_gps']}">
+		    		            <div class="rent-item__img_compose">
+		    		                <a href="{:U('Rent/Index/detail', array('id' => $vo['id']))}">
+		    		                    <img class='rent-item__img_cover' src="{$vo.cover|get_cover='cover'}" >
+		    		                </a>
+		    		                <div class="rent-item__price-label">
+		    		                    <small>$</small>{$vo.min_price|number_format}-<small>$</small>{$vo.max_price|number_format}
+		    		                </div>
+		    		            </div>
+		    		            <div class="rent-item__compose">
+		    		                <span class="rent-item__title">{$vo['title']}</span>
+		    		                <div class="rent-item__bedroom">
+		    		                	{$vo['min_bedroom_count']}-{$vo['max_bedroom_count']}
+		    		                </div>
+		    		                <div>
+		    		                	<volist name="vo['tags']" id='v'>
+			    		                	<notempty name='v'>
+                                                <a class="rent-tag rent-item__tag" style='color: white;'>{$v}</a>
+                                                <else />
+                                                <br />
+                                            </notempty>
+			    		                </volist>
+		    		                </div>
+		    		            </div>
+		    		        </div>
+		    		    </div>
+		    		</volist>
+		    	</div>
+		    </div>
+		    <!-- <div class="infinite-scroll-preloader">
+			    <div class="preloader"></div>
+			</div> -->
+        </div>
+    </div>
+</block>
+
+<block name="script">
+	<script position="page" src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+    <script position='page' src='__PUBLIC__/libs/jquery-ui/jquery-ui.js'></script>
+    <script position="page">
+    	$(function() {
+            // 初始化价格区间的位置
+            var min_price = "{$_GET['min_price']}";
+            var max_price = "{$_GET['max_price']}";
+            if(min_price != '') {
+                $('.drag-container__price_min').text(min_price);
+                min_price = min_price.substring(1, min_price.length);
+                min_price = parseInt(min_price);
+                $( ".drag-container__btn_left" ).css('left',(min_price / 25 - 15) + 'px');
+                $('.drag-container__fill_orange').css('left',(min_price / 25) + 'px');
+            }
+            if(max_price != '') {
+                $('.drag-container__price_max').text(max_price);
+                max_price = max_price.substring(1, max_price.length);
+                max_price = parseInt(max_price);
+                $( ".drag-container__btn_right").css('left',(max_price / 25 - 15) + 'px');
+                $('.drag-container__fill_orange').css('right', (200 - (max_price / 25)) + 'px');
+            }
+            // 价格区间选择
+            var btn_left = document.getElementById('drag-container');
+            var move_flag = '';
+            btn_left.addEventListener('touchstart',function(e) {
+                // 判断滑动哪个点；
+                var x = parseInt(e.touches[0].clientX - this.offsetLeft);
+                var min = $('.drag-container__btn_left').css('left');
+                var max = $('.drag-container__btn_right').css('left');
+                min = min.substring(0, min.length-2);
+                max = max.substring(0, max.length-2);
+                if(Math.abs(x-min) < Math.abs(max-x)) {
+                    move_flag = 'left';
+                } else {
+                    move_flag = 'right';
+                }
+            })
+            btn_left.addEventListener('touchmove',function(e) {
+                var x = parseInt(e.touches[0].clientX - this.offsetLeft);
+                var min = $('.drag-container__btn_left').css('left');
+                var max = $('.drag-container__btn_right').css('left');
+                min = min.substring(0, min.length-2);
+                max = max.substring(0, max.length-2);
+                if(move_flag == 'left') {
+                    if(x < -20 || x > 175 || (x > (max-15))) {return;}
+                    $('.drag-container__btn_'+move_flag).css(move_flag,x+'px');
+                    $('.drag-container__fill_orange').css(move_flag,x+'px');
+                    if( x <= -15) {
+                        $('.drag-container__price_min').text('$0');
+                    } else {
+                        $('.drag-container__price_min').text('$'+(x+15)*25);
+                    }
+                    $('input[name="min_price"]').val($('.drag-container__price_min').text());
+                } else {
+                    if(x < 0 || x >= 190 || (x < (min+15))) {return;}
+                    $('.drag-container__btn_right').css('left',x +'px');
+                    $('.drag-container__fill_orange').css(move_flag,(200-x)+'px');
+                    if(x < 185) {
+                        $('.drag-container__price_max').text('$'+(x+15)*25);
+                    } else {
+                        $('.drag-container__price_max').text('$5000+');
+                    }
+                    $('input[name="max_price"]').val($('.drag-container__price_max').text());
+                }
+            });
+
+    		//下拉菜单
+            $('.hide-filter').click(function(event) {
+                event.preventDefault();
+                $('.filter-show').slideUp('slow/400/fast');
+                $('.filter-hide').slideDown('slow/400/fast');
+            });
+            $('.filter-hide').click(function(event) {
+                $('.filter-show').slideDown('slow/400/fast');
+                $('.filter-hide').slideUp('slow/400/fast');
+            });
+
+            // 初始化区域选择
+            var suburb_json = {$suburb_json};
+            var suburb = new Object();
+            suburb['全部'] = ['全部'];
+            for(var i in suburb_json) {
+            	var temp = new Array();
+                temp.push('全部');
+            	for(var j in suburb_json[i].c) {
+            		temp.push(suburb_json[i].c[j].n);
+            	}
+            	if(temp.length == []) {
+            		suburb[suburb_json[i].p] = ['全部'];
+            	} else {
+            		suburb[suburb_json[i].p] = temp;
+            	}
+            }
+
+            var pickerDependent = myApp.picker({
+			    input: '#suburb-picker',
+			    rotateEffect: true,
+			    formatValue: function (picker, values) {
+                    if(values[1] == '全部') {
+                        return values[0];
+                    }
+			        return values[0] +','+ values[1];
+			    },
+			    cols: [
+			        {
+			            textAlign: 'center',
+			            values: ['全部','曼哈顿Manhattan', '新泽西NewJersey', '布鲁克林Brooklyn','皇后区Queens','其他区域'],
+			            onChange: function (picker, i) {
+			                if(picker.cols[1].replaceValues){
+			                    picker.cols[1].replaceValues(suburb[i]);
+			                }
+			            }
+			        },
+			        {
+			            textAlign: 'center',
+			            values: suburb['全部']
+			        },
+			    ]
+			});
+
+			// 初始化浴室范围选择
+			var bedroom_count = {$bedroom_json};
+			var bedroom_arr = [];
+			for (var i in bedroom_count) {
+                bedroom_arr.push(bedroom_count[i]);
+			}
+
+            var get_Value = "{$_GET['bedroom_count']}";
+
+            $("#bedroom-picker").val(bedroom_count[get_Value]);
+
+			var pickerDevice = myApp.picker({
+			    input: '#bedroom-picker',
+			    cols: [
+			        {
+			            textAlign: 'center',
+			            values:bedroom_arr,
+			        }
+			    ]
+			});
+            
+            $('.filter-list').click(function(){
+                var url = '{:U("Rent/Index/index",'','',false)}';
+
+                var query = $('.form-filter').serialize();
+                var num = query.split("&")[3].split("=")[1]; //获得表单所得的浴室房间的参数
+                if (num !== ""){
+                    $.each(bedroom_count,function(k,v){
+                        //从浴室范围对象中查询所选值
+                        if (v === $("#bedroom-picker").val()){
+                            query = query.replace(num,k);
+                        }
+                    });
+                }
+                url += "&" + query;
+                location.href = url;
+                return false;
+            });
+			var request = new Object();
+            var target = location.href,loading = false;
+            request['p'] = 2;
+			 $('.infinite-scroll').on('infinite', function () {
+				if (loading) return;
+				loading = true;
+				$.get(target,request,function(data) {
+					loading = false;
+                    if(!data.status) {
+                        myApp.detachInfiniteScroll('.infinite-scroll');
+                        return;
+                    }
+                    request['p'] ++;
+                    var inner = create_dom(data.data);
+                    $('.rent-list').append(inner);
+                    create_marker(data.data,map);
+                });
+			});
+
+            // 获取地图所需数据
+            if(!({$data_json} == null)) {
+                var data = {$data_json};
+                var map = initial_map(data);
+                create_marker(data,map);
+
+            } else {
+                initial_map(data);
+                $('#load-more').hide();
+            }
+            // 初始化地图
+            function initial_map(data) {
+                if(data) {
+                    // mapbox
+                    L.mapbox.accessToken = 'pk.eyJ1IjoiYmxpbmRzcG90IiwiYSI6ImNpbW9sdG42YzAwZzZ2a2t5NXY3aTZpbmgifQ.bK7d-lqGLQmZVe9Z2QHHEA';
+                    var map = L.mapbox.map('map', 'mapbox.streets').setView(data[0].address_gps.split(','), 12);
+                    return map;
+                } else {
+                    L.mapbox.accessToken = 'pk.eyJ1IjoiYmxpbmRzcG90IiwiYSI6ImNpbW9sdG42YzAwZzZ2a2t5NXY3aTZpbmgifQ.bK7d-lqGLQmZVe9Z2QHHEA';
+                    var map = L.mapbox.map('map', 'mapbox.streets').setView([40.7143528,-74.0059731], 12);
+                }
+            }
+
+            function create_marker(data,map) {
+                for(var i in data) {
+                    var info = '<div><a href="'+data[i].infowindow_href+'"><img class="infowindow-img" src="'+ data[i].cover_url + '"><p>'+ data[i].title +'</p><ul class="list-inline"><li>'+data[i].min_bedroom_count+'-'+data[i].max_bedroom_count+'</li></ul></a></div>';
+                    var label = '<div class="price_label my-marker'+ data[i].id +'"><small>$</small>'+ data[i].min_price+'-<small>$</small>'+data[i].max_price+'<span class="fa fa-sort-desc"></div>';
+                    var myIcon = L.divIcon({html: label});
+                    setdivIcon(data[i].address_gps.split(','),myIcon,info,map);
+                }
+            }
+            function setdivIcon(position,myIcon,info,map){
+                L.marker(position, {icon: myIcon}).bindPopup(info,{minWidth:200}).addTo(map);
+            }
+    	})
+    	function create_dom(data) {
+            var inner = '';
+            for(var i in data) {
+                var x = data[i];
+                inner += '<div class="col-50">'
+                +'<div class="rent-item" data-gps="'+x.address_gps+'">'
+                    +'<div class="rent-item__img_compose">'
+                        +'<a href="'+x.infowindow_href+'">'
+                            +'<img class="rent-item__img_cover" src="'+x.cover_url+'" ></a>'
+                        +'<div class="rent-item__price-label">'
+                            +'<small>$</small>'+x.min_price+'-<small>$</small>'+x.max_price+'</div>'
+                    +'</div>'
+                    +'<div class="rent-item__compose">'
+                        +'<span class="rent-item__title">'+x.title+'</span>'
+                        +'<div class="rent-item__bedroom">'+x.min_bedroom_count+'-'+x.max_bedroom_count+'</div><div>';
+                
+                if (x.tags[0] !== ""){
+                    x.tags.forEach(function(tag){
+                        inner += '<a class="button button-orange rent-tag">'+tag+'</a>';
+                    });
+                }else{
+                    inner += "<br />";
+                }
+
+                inner += '</div></div></div></div>';
+            }
+            return inner;
+        }
+    </script>
+</block>

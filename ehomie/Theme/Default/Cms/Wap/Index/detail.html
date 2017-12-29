@@ -1,0 +1,48 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style position="page">
+    	.badge {
+            background-color: #ff7733;
+            margin-right: 10px;
+        }
+        .gray {
+            color: #888;
+            margin-left: 27px;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content infinite-scroll">
+        	<div class="content-block no-margin">
+                <div class="content-block-inner">
+                    <h3 class="text-center">{$info.main_field}</h3>
+                    {$info['content']|parse_content}
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+

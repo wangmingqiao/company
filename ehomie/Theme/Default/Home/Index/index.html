@@ -1,0 +1,474 @@
+<extend name="$_home_public_layout"/>
+
+<block name="style">
+    <style type="text/css">
+        /*导航栏*/
+        .navbar-header {
+            height: 74px;
+        }
+        .navbar-brand {
+            height: 100%;
+        }
+        .navbar .navbar-brand img {
+            margin-top: 0;
+        }
+        #navbar-collapse .navbar-left li:hover {
+            background:none;
+        }
+        #navbar-collapse .navbar-right li:hover {
+            opacity: 0.75;
+            background-color: #d3d3d3;
+        }
+        .home-top {
+            height: 48rem;
+            font-family: Microsoft Yahei;
+            overflow: visible;
+            position: relative;
+        }
+        @media(min-width: 1800px) {
+            .home-top {
+                height: 850px;
+            }
+        }
+        .myvideo {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: auto;
+            bottom: 0;
+            /*width: calc(100% + 10px);*/
+            min-width: 100%;
+            min-height: 100%;
+        }
+        @media(min-width: 1120px) {
+            .myvideo {
+                width: 100%;
+            }
+        }
+        .home-top__title {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            z-index: 10;
+            transform: translateY(-50%);
+            background: none;
+            color: #fff;
+            flex-direction: column;
+            -webkit-flex-direction: column;
+            text-align: center;
+        }
+        .home-top__title .for-space {
+            margin-top: 2rem;
+        }
+        .navbar-exej {
+            position: absolute;
+            height: 74px;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background-color: rgba(0,0,0,0.3);
+            border-bottom: none;
+        }
+        .navbar-exej li a {
+            color: #fff;
+            cursor: pointer;
+        }
+        .navbar-exej .navbar-nav-left li a {
+            cursor: auto;
+        }
+        .navbar-exej .navbar-nav li a:hover {
+            background: none;
+        }
+        .home-top__form {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 10rem;
+        }
+        .home-top__form .input-group {
+            width: 42rem;
+        }
+        .home-top__form .search-input {
+            border-radius: 0;
+        }
+
+        /*搜索提示*/
+        .search-tips-box{
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            min-width: 504px;
+            z-index: 2;
+            max-width: 90%;
+        }
+        .search-tips{
+            display:none;
+            width: 504px;
+            z-index: 10000;
+            background-color: #fff;
+            list-style: none;
+            text-align: left;
+            padding-left: 0px;
+            border:1px solid #ccc;
+            opacity:0.9;
+            max-width: 100%;
+        }
+        .search-tips li{
+            padding:5px 10px;
+            border-bottom:1px solid #ccc;
+        }
+        .search-tips li:last-child{
+            border:none;
+        }
+        .search-tips li a{
+            text-decoration: none;
+            font-size: 15px;
+            color:#aaa;
+        }
+        .search-tips li a .fa-search{
+            margin-right: 10px;
+        }
+
+        /*区域链接*/
+        .suburb{
+            background-color: #f0f0f0;
+        }
+        .suburb-title p{
+            font-size: 2rem;
+            margin: 3.7rem auto;
+            font-family: Microsoft Yahei;
+        }
+        .suburb-container {
+            width: 912px;
+            max-width: 100%;
+            margin: auto;
+        }
+        .suburb-item{
+            margin-bottom: 2.2rem;
+            height: 290px;
+            width: 100%;
+            padding: 0;
+            background-repeat: no-repeat;
+            background-size:100% 100%;
+            text-align: center;
+            opacity: 0.85;
+        }
+        .suburb-item:hover{
+            opacity: 1;
+            transition: all 0.5s ease-in-out;
+        }
+        .suburb-item span{
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.8rem;
+            display: inline-block;
+        }
+        .suburb-item:hover span{
+            opacity: 0;
+            transition: all 0.3s ease-in-out;
+        }
+        /*形容词*/
+        .feature_img {
+            width: 150px;
+        }
+        /*租客故事*/
+        .story-container {
+            width: 912px;
+            max-width: 100%;
+            margin: auto;
+        }
+        .story-list {
+            padding: 0 15px;
+        }
+        .story-item {
+            padding: 0;
+            margin: 15px;
+            height: 250px;
+            width: calc(33.3333% - 30px);
+            background-size: 100% 100%;
+        }
+        .story-item a{
+            text-decoration: none;
+        }
+        .story-item a img{
+            width:100%;
+            height:250px;
+        }
+        .story-item p{
+            color: #fff;
+            font-size: 17px;
+            overflow: hidden;
+            text-shadow: 0px 0px 1px #aaa;
+        }
+        .story-item__title{
+            position: absolute;
+            left: calc(9% - 15px);
+            right:calc(9% - 15px);
+            top:60%;
+            font-size: 1.7rem;
+            text-align: center;
+        }
+        .story-item__abstract{
+            position: absolute;
+            left: 8%;
+            right:8%;
+            top:75%;
+            font-size: 14px;
+            height: 43px;
+        }
+        .story-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 7px 7px #bbb;
+        }
+        /*租房流程*/
+        .flow-item {
+            float: left;
+            width: 20%;
+            padding: 0 15px;
+        }
+    </style>
+</block>
+<block name='main-nav'></block>
+<block name="jumbotron"></block>
+
+<block name="main">
+    <div class="home-top">
+        <nav class="navbar navbar-exej" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <i class="fa fa-list" style="color: #fff;font-size: 20px;"></i>
+                    </button>
+                    <a class="navbar-brand" href="{:C('HOME_PAGE')}" style="margin-left:0;">
+                        <img src="__HOME_IMG__/ehomie_logo_home.png" alt="">
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{:C('HOME_PAGE')}">首页</a></li>
+                        <li class="nav-item"><a href="{:U('Rent/Index/index')}">找房</a></li>
+                        <li class="nav-item"><a data-toggle="modal" href="#wtzf">委托找房</a></li>
+                        <li class="nav-item"><a href="{:U('Rent/Index/knowledge')}">租前需知</a></li>
+                        <present name="_user_auth">
+                            <li class="nav-item"><a href="{:U('Rent/Mark/my')}">个人中心</a></li>
+                            <else />
+                            <li class="nav-item"><a data-toggle="modal" href="#register-modal">注册</a></li>
+                            <li class="nav-item"><a data-toggle="modal" href="#login-modal">登录</a></li>
+                        </present>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="center home-top__title">
+                    <h1 class="for-dream" style='font-size: 37px;'>为梦想<span style="display: inline-block;width: 20px;"></span>租好房</h1>
+                    <p class="for-space" style='font-size: 16px;'>If you can make it here, you can make it anywhere.</p>
+                </div>
+                <form class="form-inline home-top__form text-center" action="{:U('Rent/Index/index')}" >
+                    <div class="input-group" style='height: 42px;'>
+                        <input type="text" class="form-control search-input" style="width: 421px;height: 42px;border-color:#fff;box-shadow: none;" placeholder="请输入区域如曼哈顿" name="keyword">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-orange search-btn" style='height: 42px; outline:none;'>开始找房</button>
+                        </span>
+                    </div>
+                    <div class="search-tips-box">
+                        <ul class="search-tips">
+                            <li>
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'曼哈顿Manhattan'))}">
+                                    <i class="fa fa-search"></i>曼哈顿Manhattan
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'新泽西NewJersey'))}">
+                                    <i class="fa fa-search"></i>新泽西NewJersey
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'布鲁克林Brooklyn'))}">
+                                    <i class="fa fa-search"></i>布鲁克林Brooklyn
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'皇后区Queens'))}">
+                                    <i class="fa fa-search"></i>皇后区Queens
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'其他区域'))}">
+                                    <i class="fa fa-search"></i>其他区域
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </form>
+                <video class="myvideo background" id="_myvideo" x-webkit-airplay="true" webkit-playsinline="true" autoplay="autoplay" loop="loop">
+                    <source src="__HOME_IMG__/11.mp4" type="video/mp4" />
+                    <source src="__HOME_IMG__/1.ogg" type="video/ogg" />
+                    <source src="__HOME_IMG__/1.webm" type="video/webm" />
+                    <object data="__HOME_IMG__/1.mp4">
+                        <embed src="__HOME_IMG__/1.swf" />
+                    </object>
+                </video>
+            </div>
+        </div>
+    </div>
+    <!-- 形容词块 -->
+    <div class="container-fluid" style='background: #fff;'>
+        <div class="container feature" style="padding-top: 30px;background: #fff;">
+            <div class="row">
+                <div class="col-sm-3 text-center">
+                    <img class="feature_img" class="" src="__HOME_IMG__/smart.png" alt="">
+                    <h4>智能</h4>
+                    <p class="text-muted">VR看房 突破异地看房限制</p>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <img class="feature_img" src="__HOME_IMG__/professional.png" alt="">
+                    <h4>专业</h4>
+                    <p class="text-muted">海外顾问 一站式租房服务</p>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <img class="feature_img" src="__HOME_IMG__/free.png" alt="">
+                    <h4>免费</h4>
+                    <p class="text-muted">零服务费 房租透明无溢价</p>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <img class="feature_img" src="__HOME_IMG__/efficiency.png" alt="">
+                    <h4>高效</h4>
+                    <p class="text-muted">24小时服务 快速匹配潜在室友</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 区域 -->
+    <div class="suburb">
+        <div class="text-center suburb-title">
+            <p>全面覆盖纽约热门地点</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="suburb-container">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'曼哈顿Manhattan'))}"><div class="suburb-item center" style="border:0; background-image: url(__HOME_IMG__/yxyk/index/city1.jpg);">
+                                    <span>曼哈顿</span>
+                                </div></a>
+                            </div>
+                            <div class="col-sm-5">
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'皇后区Queens'))}"><div class="suburb-item center" style="border:0;background-image: url(__HOME_IMG__/yxyk/index/city2.jpg);">
+                                    <span>皇后区</span>
+                                </div></a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'布鲁克林Brooklyn'))}"><div class="suburb-item center" style="border:0;background-image: url(__HOME_IMG__/yxyk/index/city3.jpg);">
+                                    <span>布鲁克林</span>
+                                </div></a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'新泽西NewJersey'))}"><div class="suburb-item center" style="border:0;background-image: url(__HOME_IMG__/yxyk/index/city4.jpg);">
+                                    <span>新泽西</span>
+                                </div></a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a href="{:U('Rent/Index/index',array('suburb'=>'其他区域'))}"><div class="suburb-item suburb-item-standard center" style="border:0;background-image: url(__HOME_IMG__/yxyk/index/city5.jpg);">
+                                    <span>其他区域</span>
+                                </div></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 我的故事 -->
+    <div class="story" style='background: #fff;padding-top: 5px;'>
+        <div class="text-center suburb-title">
+            <p>我的故事，在纽约</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="story-container">
+                    <div class="container-fluid story-list">
+                        <!-- <div class="row"> -->
+                            <cms:article_list name="vo" cid="0" limit="3">
+                                <a href="{:U('Cms/Index/detail',array('id' => $vo['id']))}"  style="box-sizing: border-box;">
+                                    <div class="col-xs-4 text-center story-item" style="background-image: url({$vo.cover|get_cover='cover'})">
+                                        <p class='story-item__title'>{$vo.title}</p>
+                                        <p class="story-item__abstract">{$vo.abstract}</p>
+                                    </div>
+                                </a>
+                            </cms:article_list>
+                        <!-- </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="rent-flow">
+        <div class="text-center suburb-title">
+            <p>租房流程</p>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="suburb-container" style='width: 960px;'>
+                    <div class="container-fluid">
+                        <div class="flow-item text-center">
+                            <img src="__HOME_IMG__/choose.png" alt="">
+                            <h4>多维选房</h4>
+                            <p class="text-muted">通过线上看房、远程看房、或实地看房选定房源</p>
+                        </div>
+                        <div class="flow-item text-center">
+                            <img src="__HOME_IMG__/consult.png" alt="">
+                            <h4>专属咨询</h4>
+                            <p class="text-muted">一对一顾问，24小时服务解答疑问</p>
+                        </div>
+                        <div class="flow-item text-center">
+                            <img src="__HOME_IMG__/match.png" alt="">
+                            <h4>智能匹配</h4>
+                            <p class="text-muted">高效信息管理系统，快速匹配室友</p>
+                        </div>
+                        <div class="flow-item text-center">
+                            <img src="__HOME_IMG__/sign.png" alt="">
+                            <h4>申请签约</h4>
+                            <p class="text-muted">协助完成公寓申请和签约</p>
+                        </div>
+                        <div class="flow-item text-center">
+                            <img src="__HOME_IMG__/service.png" alt="">
+                            <h4>配套服务</h4>
+                            <p class="text-muted">根据您特定的需求，提供接机、家具等定制服务</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script src='__HOME_JS__/client.js'></script>
+    <script type="text/javascript">
+        $(function() {
+            //关闭视频声音
+            var myVid = document.getElementById("_myvideo");
+            {
+                myVid.muted=true;
+            }
+            $('input.search-input').focus(function(event) {
+                $('.search-tips').show();
+            });
+            $('input.search-input').blur(function(event) {
+                setTimeout(function(){
+                    $('.search-tips').hide();
+                }, 500);
+            });
+            // $('.suburb-item').height($('.suburb-item-standard').width());
+            // $('.story-item').height($('.story-item').width() * 1.414);
+        })
+    </script>
+</block>

@@ -1,0 +1,1000 @@
+<extend name="$_home_public_layout"/>
+
+<block name='app-title'><meta name="apple-mobile-web-app-title" content="{$info['title']}"></block>
+<block name='title'><title>{$info['title']}</title></block>
+<block name="style">
+	<link href='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.css' rel='stylesheet' />
+    <style position="page">
+        .color-gray {
+            color: #888;
+        }
+        /*顶端VR、视频、图片展示*/
+        .swiper-container-horizontal>.swiper-pagination-bullets {
+            bottom: 5px;
+        }
+    	.swiper-container {
+            background: #fff;
+        }
+        .swiper-slide {
+            background: #fff;
+            box-sizing: border-box;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            background-size: 15px;
+        }
+        .show-item__container {
+            height: 235px;
+            overflow: hidden;
+        }
+        @media(min-width: 375px) and (max-width:413px) {
+            .show-item__container {
+                height: 211px;
+            }
+        }
+        @media(min-width: 360px) and (max-width:374px) {
+            .show-item__container {
+                height: 203px;
+            }
+        }
+
+        .show-item__tab-links {
+            margin: 0.5rem 0 1.5rem;
+        }
+        .show-item__button_tip {
+            border-color: #333!important;
+            color: #333!important;
+            margin: 0 1rem;
+        }
+        .show-item__tab-link {
+            color: #333!important;
+            margin: 0 1rem;
+        }
+        .show-item__tab-link.active {
+            color: #ff7733!important;
+        }
+        .content-block-title h3 {
+            margin: 0;
+        }
+        .video-box {
+            position:relative;
+            overflow:hidden;
+            -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px;
+            font-family: Arial; font-size:0px; color:#000;
+        }
+        /*所有公寓*/
+        .room-item__content-item_img {
+            width: 25px;
+            height: 25px;
+            margin-right: 5px;
+            vertical-align: text-bottom;
+        }
+        .remove_cur_room {
+            color: #666;
+            margin-left: 50px;
+        }
+        /*配套设施*/
+        .common-item__img {
+            width: 20px;
+            height: 20px;
+            vertical-align: text-bottom;
+        }
+        /*周边房源*/
+        .surrounding-item {
+            height: 150px;
+            background-size: 100% 100%;
+        }
+        .surrounding-item__info {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:rgba(255,255,255,0.7);
+        }
+        .surrounding-item__info_title,.surrounding-item__info_address {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .roommate-item__img_avatar {
+            width: 60px;
+            border-radius: 100%;
+        }
+        /*modal*/
+        .modal {
+            width: 90%;
+            margin-left: -45%;
+            border-radius: 0;
+        }
+        .modal .modal-inner {
+            border-radius: 0;
+        }
+        .modal .modal-inner .list-block {
+            margin: 15px -15px -15px;
+        }
+        .room-modal-fade {
+            background-color: rgba(0,0,0,0.3);
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: 10;
+            display: none;
+        }
+        .show-item__modal-container {
+            height: 180px;
+            overflow: hidden;
+        }
+        .room-modal {
+            position: absolute;
+            /*height: 270px;*/
+            width: 320px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            z-index: -120;
+            box-shadow: 0 0 5px #aaa;
+            background: #fff;
+        }
+        .room_modal__content {
+            padding: 0 15px;
+        }
+        .room_modal__content h4 {
+            margin: 10px 0 5px;
+        }
+        .room_modal__content p {
+            margin-top: 0;
+        }
+
+        /*立即咨询*/
+        .room-select__container {
+            right: 0;
+            bottom: 44px;
+            background-color: #fff;
+            width: 50%;
+            box-shadow: -2px -2px 3px #aaa;
+        }
+        .room-selected__leader,.room-selected {
+            height: 44px;
+            border:none;
+            color: #333!important;
+            width: 100%;
+        }
+        .room-selected__leader:before {
+            position: absolute;
+            top: 50%;
+            left: 5px;
+            right: auto;
+            width: 20%;
+            height: 1px;
+            background-color: #888;
+            display: inline-block;
+            z-index: 10;
+            content: '';
+        }
+        .room-selected__leader:after {
+            position: absolute;
+            top: 50%;
+            left: auto;
+            right: 5px;
+            width: 20%;
+            height: 1px;
+            background-color: #888;
+            display: inline-block;
+            z-index: 10;
+            content: '';
+        }
+        .fa-check-circle {
+            color: #ff7733;
+        }
+        .picker-columns {
+            z-index: 14500;
+        }
+
+       .rent-tag {
+            cursor: default;
+            position: relative;
+            background: #ff7733;
+            border-radius: 2px 0 0 2px;
+            display: inline-block;
+            height: 20px;
+            line-height: 20px;
+            padding: 0 10px 0 10px;
+            -webkit-transition: color 0.2s;
+            font-size:8px;
+        }
+
+        .rent-tag::before {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: inset 0 1px rgba(0, 0, 0, 0.25);
+            content: '';
+            height: 6px;
+            left: 4px;
+            position: absolute;
+            width: 5px;
+            top: 7px;
+        }
+
+        .rent-tag::after {
+            background: #fff;
+            border-left: 10px solid #ff7733;
+            border-top: 13px solid transparent;
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .rent-tag:hover {
+            background-color: #EB7500;
+            color: white;
+        }
+
+        .rent-tag:hover::after {
+            border-left-color: #EB7500; 
+        }
+
+        .show-item__tab-links .swiper-button-next, .detail-swiper-button-next{
+            margin: 0.5rem;
+            float:right;
+            position:relative;
+        }
+
+        .show-item__tab-links .swiper-button-prev, .detail-swiper-button-prev{
+            margin: 0.5rem;
+            float:left;
+            position:relative;
+        }
+
+        .show-item__tab-links i{
+            border: 1px solid #333;
+            font-size:25px;
+            border-radius: 30px;
+            padding: 5px;
+        }
+
+        .show-item__tab-links i.active{
+            color:#ff7733;
+            border: 1px solid #ff7733;
+        }
+
+        .show-item__tab-link.active i{
+            color:#ff7733;
+            border: 1px solid #ff7733;
+        }
+
+        .rented-mark{
+            position: relative;
+            font-weight: bold;
+        }
+
+        .inner-swiper-button-next,.inner-swiper-button-prev{position:absolute;top:50%;width:27px;height:44px;margin-top:-22px;z-index:10;cursor:pointer;-moz-background-size:15px;-webkit-background-size:15px;background-size:15px;background-position:center;background-repeat:no-repeat}.inner-swiper-button-next.inner-swiper-button-disabled,.inner-swiper-button-prev.inner-swiper-button-disabled{opacity:.35;cursor:auto;pointer-events:none}.inner-swiper-button-prev,.inner-swiper-container-rtl .inner-swiper-button-next{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ff7733'%2F%3E%3C%2Fsvg%3E");left:10px;right:auto}.inner-swiper-button-next,.swiper-container-rtl .inner-swiper-button-prev{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ff7733'%2F%3E%3C%2Fsvg%3E");right:10px;left:auto}
+        .detail-swiper-button-next,.detail-swiper-button-prev{position:absolute;width:27px;height:44px;margin-top: 0.5rem;z-index:10;cursor:pointer;-moz-background-size:15px;-webkit-background-size:15px;background-size:15px;background-position:center;background-repeat:no-repeat}.detail-swiper-button-next.detail-swiper-button-disabled,.detail-swiper-button-prev.detail-swiper-button-disabled{opacity:.35;cursor:auto;pointer-events:none}.detail-swiper-button-prev,.detail-swiper-container-rtl .detail-swiper-button-next{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M0%2C22L22%2C0l2.1%2C2.1L4.2%2C22l19.9%2C19.9L22%2C44L0%2C22L0%2C22L0%2C22z'%20fill%3D'%23ff7733'%2F%3E%3C%2Fsvg%3E");left:10px;right:auto}.detail-swiper-button-next,.swiper-container-rtl .detail-swiper-button-prev{background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox%3D'0%200%2027%2044'%3E%3Cpath%20d%3D'M27%2C22L27%2C22L5%2C44l-2.1-2.1L22.8%2C22L2.9%2C2.1L5%2C0L27%2C22L27%2C22z'%20fill%3D'%23ff7733'%2F%3E%3C%2Fsvg%3E");right:10px;left:auto}
+
+        @media(min-width: 319px) and (max-width: 359px) {
+            .show-item__container {
+                height: 180px;
+            }
+
+            .room-selected__leader::before{
+                width:15%;
+            }
+
+            .room-selected__leader::after{
+                width:15%;
+            }
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content" style='background-color: #fafafa;'>
+        	<div class="swiper-container swiper-init" data-speed="400" data-space-between="40" data-pagination=".swiper-pagination" data-next-button='.swiper-button-next' data-prev-button='.swiper-button-prev'>
+                <div class="swiper-wrapper show-list">
+                    <notempty name='info["video"]'>
+                        <div class="swiper-slide show-item" id='video-container'>
+                            <div class="show-item__container" id='video'></div>
+                            <div class="show-item__tab-links text-center">
+                                <span class="swiper-button-next"></span>
+                                <div class="center">
+                                    <a class="button button-round show-item__button_tip">视频看房 ></a>
+                                    <div class="center flex-column">
+                                        <i class='fa fa-film active'></i>
+                                        <label class="show-item__tab-link active">实景视频</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </notempty>
+                    <notempty name='info["vr"]'>
+                        <div class="swiper-slide show-item" id='vr-container'>
+                            <div class="div show-item__container" id='vr'>
+                                <iframe height="250px" width="100%" src="{$info['vr']}&play=1&qs=1" frameborder="0" allowfullscreen></iframe>
+                            </div>
+                            <div class="show-item__tab-links text-center">
+                                <notempty name='info["video"]'>
+                                    <span class="swiper-button-prev"></span>
+                                </notempty>
+                                <span class="swiper-button-next"></span>
+                                <div class="center">
+                                    <a class="button button-round show-item__button_tip">VR看房 ></a>
+                                    <div class="center flex-column">
+                                        <i class='fa fa-video-camera active'></i>
+                                        <label class="show-item__tab-link active">实景房</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </notempty>
+                    <div class="swiper-slide show-item">
+                        <div class="show-item__container">
+                            <div class="tabs tabs-top show-item__tabs" style="height: 100%">
+                                <div class="tab tab1  active show-item-tab" style="height: 100%">
+                                    <!-- 实景图幻灯片 -->
+                                    <div class="swiper-container swiper-init" data-next-button='.inner-swiper-button-next' data-prev-button='.inner-swiper-button-prev' style="height: 100%" data-button-disabled-class="inner-swiper-button-disabled">
+                                        <div class="swiper-wrapper">
+                                            <volist name='info["img_real_url"]' id='vo'>
+                                                <div class="swiper-slide">
+                                                    <img src="{$vo}" height="100%" width="100%" alt="">
+                                                </div>
+                                            </volist>
+                                        </div>
+                                        <div class="inner-swiper-button-prev"></div>
+                                        <div class="inner-swiper-button-next"></div>
+                                    </div> <!-- 实景图幻灯片 end -->
+                                </div>
+                                <div class="tab tab2 show-item-tab" style="height: 100%">
+                                    <!-- 户型图幻灯片 -->
+                                    <div class="swiper-container swiper-init" data-next-button='.inner-swiper-button-next' data-prev-button='.inner-swiper-button-prev' style="height: 100%" data-button-disabled-class="inner-swiper-button-disabled">
+                                        <div class="swiper-wrapper">
+                                            <volist name='info["img_structure_url"]' id='vo'>
+                                                <div class="swiper-slide">
+                                                    <img src="{$vo}" height="100%" width="100%" alt="">
+                                                </div>
+                                            </volist>
+                                        </div>
+                                        <div class="inner-swiper-button-prev"></div>
+                                        <div class="inner-swiper-button-next"></div>
+                                    </div> <!-- 户型图幻灯片 end -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-links text-center show-item__tab-links">
+                            <span class="swiper-button-prev"></span>
+                            <div class='center'>
+                                <a class="button button-round show-item__button_tip">公寓相册 > </i></a>
+                                <a class="tab-link active show-item__tab-link center" data-tab=".tab1">
+                                    <div class="center flex-column">
+                                        <i class='fa fa-photo'></i>
+                                        <span>实景图</span>
+                                    </div>
+                                </a>
+                                <a class="tab-link show-item__tab-link center" data-tab=".tab2">
+                                    <div class="center flex-column">
+                                        <i class='fa fa-building'></i>
+                                        <span>户型图</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+
+            <!-- 基本信息 -->
+            <div class="content-block">
+                <div class="content-block-inner">
+                    <h3>{$info['title']}</h3>
+                    <p><i class="fa fa-map-marker"></i>{$info['address']}</p>
+                    <p>
+                        <volist name="info['tags']" id="vo">
+                            <notempty name='vo'>
+                                <button style="margin-right: 10px;" class="button button-orange">{$vo}</button>
+                            </notempty>
+                        </volist>
+                    </p>
+                </div>
+            </div><!-- 基本信息 end -->
+
+            <!-- 找室友 -->
+            <div class="content-block-title">
+                <h3>找室友</h3>
+            </div>
+            <notempty name='info["roommate_list"]'>
+            <div class="content-block no-margin">
+                <div class="content-block-inner">
+                    <div class="swiper-container swiper-init" data-next-button='.swiper-button-next' data-prev-button='.swiper-button-prev'  style="height: 200px;">
+                        <div class="swiper-wrapper">
+                            <volist name='info["roommate_list"]' id='vo'>
+                                <div class="swiper-slide">
+                                    <div class="row">
+                                        <div class="col-33 end" style="height: 200px;">
+                                            <img class="img-circle roommate-item__img_avatar" src="{$vo['avatar']|get_cover='avatar'}" alt="">
+                                        </div>
+                                        <div class="col-66 start flex-column" style="height: 200px;">
+                                            <p>{$vo['nickname']}/
+                                            <eq name="vo['gender']" value='1'>
+                                                男
+                                            <else />
+                                                <eq name="vo['gender']" value='-1'>
+                                                    女
+                                                <else/>
+                                                    保密
+                                                </eq>
+                                            </eq>
+                                            /{$vo['birthday_tag']}/{$vo['occupation']}</p>
+                                            <p><small>{$vo['hobby']}</small></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </volist>
+                        </div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div> <!-- 实景图幻灯片 end -->
+                </div>
+            </div>
+            </notempty>
+            <div class="content-block no-margin">
+                <div class="content-block-inner text-center " style="background-color: rgb(141,203,146);">
+                    <a href="{:U('Rent/Roommate/index',array('rid'=>$info['id']))}">
+                        <i class="fa fa-paw" style="font-size: 25px;color: #ff7733;margin-right: 0.5rem;vertical-align: text-top;"></i>
+                        <span style="color: #fff;font-weight: bold;vertical-align: middle;">我要找室友</span>
+                    </a>
+                </div>
+            </div> <!-- 找室友 end -->
+            <!-- 所有公寓 -->
+            <div class="content-block-title">
+                <h3>所有公寓</h3>
+            </div>
+            <volist name="info['room_list']" id='vo'>
+                <eq name="vo['rented']" value='0'>
+                    <div class="content-block no-margin room-item room-item_normal" style="border: 1px solid #fff;">
+                        <div class="content-block-inner">
+                            <div class="row center">
+                                <div class="col-5"></div>
+                                <div class="col-60 room-item__content">
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/number.png" alt=""><span>公寓号码{$vo['number']}</span></p>
+                                    <eq name='vo["bedroom_count"]' value='0'>
+                                        <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bedroom.png" alt=""><span>studio</span></p>
+                                    <else/>
+                                        <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bedroom.png" alt=""><span>{$vo['bedroom_count']}</span></p>
+                                    </eq>
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bathroom.png" alt=""><span>{$vo['bathroom_count']}</span></p>
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/area.png" alt=""><span>室内面积 {$vo['area']} sq.ft</span></p>
+                                </div>
+                                <div class="col-33 center flex-column">
+                                    <h3>${$vo['price']|number_format}<small>／月</small></h3>
+                                    <a data-index="{$i}" class="button button-orange show-room-modal">查看详情</a>
+                                    <p><i class="fa fa-circle-o room-item__fa_select-normal" data-number='{$vo["number"]}'></i></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <else/>
+                    <div class="content-block no-margin room-item" >
+                        <div class="content-block-inner" style="background-color:rgb(239, 239, 244);opacity:0.5;">
+                            <div class="row center">
+                                <div class="col-5"></div>
+                                <div class="col-60 room-item__content">
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/number.png" alt=""><span>公寓号码{$vo['number']}</span></p>
+                                    <eq name='vo["bedroom_count"]' value='0'>
+                                        <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bedroom.png" alt=""><span>studio</span></p>
+                                    <else/>
+                                        <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bedroom.png" alt=""><span>{$vo['bedroom_count']}</span></p>
+                                    </eq>
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/bathroom.png" alt=""><span>{$vo['bathroom_count']}</span></p>
+                                    <p class="room-item__content-item"><img class='room-item__content-item_img' src="__HOME_IMG__/detail/area.png" alt=""><span>室内面积 {$vo['area']} sq.ft</span></p>
+                                </div>
+                                <div class="col-33 center flex-column">
+                                    <h3>${$vo['price']|number_format}<small>／月</small></h3>
+                                    <a data-index="{$i}" class="button show-room-modal" style="background-color: #ccc;color: #fff;border-color: #ccc;">查看详情</a>
+                                    <p class="rented-mark"><span>已出租</span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </eq>
+            </volist><!-- 所有公寓 end -->
+
+            <div class="content-block">
+                <div class="content-block-inner">
+                    <h3>房源描述</h3>
+                    <p class="color-gray"><?php echo nl2br($info['description']);?></p>
+                    <hr>
+                    <h3>其他福利和费用</h3>
+                    <p class="color-gray">{$info['other']}</p>
+                    <hr>
+                    <h3>配套设施</h3>
+                    <div class='row'>
+                        <volist name="info['common']" id="vo">
+                            <div class="col-33">
+                                <img class="common-item__img" src="__HOME_IMG__/common/{$vo}.png" alt="">
+                                <span class="color-gray">{$vo}</span>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 地图 -->
+            <div class="content-block no-margin">
+                <div class="content-block-inner">
+                    <h3 class="no-margin">地理位置</h3>
+                </div>
+            </div>
+            <div id="map" style='height: 200px;'></div>
+
+            <!-- 周边房源 -->
+            <div class="content-block" style='margin-bottom: 90px;'>
+                <div class="content-block-inner">
+                    <h3>周边房源</h3>
+                    <div class="row">
+                        <volist name="surrounding_list" id="vo">
+                            <div class="col-50 pos-r surrounding-item" style="background-image: url({$vo['cover']|get_cover='defautl'});margin-bottom: 8px;">
+                                <div class="surrounding-item__info pos-a">
+                                    <a href="{:U('Rent/Index/detail',array('id'=> $vo['id']))}">
+                                        <div class='surrounding-item__info_title'>{$vo['title']}</div>
+                                        <div class='surrounding-item__info_address'><i class="fa fa-map-marker"></i>{$vo['address']}</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="toolbar">
+            <div class="toolbar-inner" style="padding: 0;">
+                <eq name='info["is_marked"]' value='1'>
+                    <a url="{:U('Rent/Mark/add',array('data_id'=>$info['id']))}" class="button center ajax-mark" style="width: 50%;height: 100%;background-color: #fff;color: #333;border: none;">已收藏</a>
+                <else/>
+                     <a url="{:U('Rent/Mark/add',array('data_id'=>$info['id']))}" class="button center ajax-mark" style="width: 50%;height: 100%;background-color: #fff;color: #333;border: none;">收藏房源</a>
+                </eq>
+                <a class="button button-orange center show-consult-modal" style="width: 50%;height: 100%;">立即咨询</a>
+                <div class="room-select__container pos-a">
+                    <a class="button room-selected__leader center">选择的公寓号码</a>
+                </div>
+            </div>
+        </div>
+        <!-- 公寓详情 -->
+        <volist name="info['room_list']" id="vo">
+            <div class="room-modal-fade"></div>
+            <div class="room-modal room-modal{$i}">
+                <div class="room_modal__content pos-r">
+                    <h4 style='color: #ff7733;'>{$vo['number']}</h4>
+                    <p>{$vo['bedroom_count']} | {$vo['bathroom_count']}</p>
+                    <i class="fa fa-remove pos-a" style="right: 10px;top: 0px;font-size: 12px;"></i>
+                </div>
+                <div class="swiper-container  swiper-init" data-speed="400" data-space-between="10" data-pagination=".swiper-pagination" style="width: 100%;" data-next-button='.detail-swiper-button-next' data-prev-button='.detail-swiper-button-prev' data-button-disabled-class="detail-swiper-button-disabled">
+                    <div class="swiper-wrapper show-list">
+                        <notempty name='vo["video"]'>
+                            <div class="swiper-slide show-item modal-video-container">
+                                <div class="show-item__modal-container">
+                                    {$vo['video']}
+                                </div>
+                                <div class="show-item__tab-links text-center">
+                                    <span class="detail-swiper-button-next"></span>
+                                    <div class="center">
+                                        <a href="" class="button button-round show-item__button_tip">视频看房 ></a>
+                                        <div class="center flex-column">
+                                            <i class='fa fa-film active'></i>
+                                            <label class="show-item__tab-link active">实景视频</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </notempty>
+                        <notempty name='vo["vr"]'>
+                            <div class="swiper-slide show__item modal-vr-container">
+                                <div class="show-item__modal-container">
+                                    <iframe  width="100%" src="{$vo['vr']}&play=1&qs=1" frameborder="0" allowfullscreen></iframe>
+                                </div>
+                                <div class="show-item__tab-links">
+                                    <notempty name='info["video"]'>
+                                        <span class="detail-swiper-button-prev"></span>
+                                    </notempty>
+                                    <span class="detail-swiper-button-next"></span>
+                                    <div class="center">
+                                        <a href="" class="button button-round show-item__button_tip">VR看房 ></a>
+                                        <div class="center flex-column">
+                                            <i class='fa fa-video-camera active'></i>
+                                            <label class="show-item__tab-link active">实景房</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </notempty>
+                        <div class="swiper-slide show-item">
+                            <div class="show-item__modal-container">
+                                <div class="tabs tabs-top show-item__tabs" style="height: 100%;">
+                                    <div class="tab modal{$i}tab1 active show-item-tab" style="height: 100%;">
+                                        <div class="swiper-container swiper-init" data-next-button='.swiper-button-next' data-prev-button='.swiper-button-prev' style="height: 100%;">
+                                            <div class="swiper-wrapper">
+                                                <volist name='vo["img_real_url"]' id='v' key="k">
+                                                    <div class="swiper-slide">
+                                                        <img src="{$v}" height="100%" width="100%" alt="">
+                                                    </div>
+                                                </volist>
+                                            </div>
+                                            <div class="swiper-button-prev"></div>
+                                            <div class="swiper-button-next"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tab modal{$i}tab2 show-item-tab" style="height: 100%;">
+                                        <div class="swiper-container swiper-init" data-next-button='.swiper-button-next' data-prev-button='.swiper-button-prev' style="height: 100%;">
+                                            <div class="swiper-wrapper">
+                                                <volist name='vo["img_structure_url"]' id='v' key='k'>
+                                                    <div class="swiper-slide">
+                                                        <img src="{$v}" height="100%" width="100%" alt="">
+                                                    </div>
+                                                </volist>
+                                            </div>
+                                            <div class="swiper-button-prev"></div>
+                                            <div class="swiper-button-next"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-links text-center show-item__tab-links">
+                                <span class="detail-swiper-button-prev"></span>
+                                <div class='center'>
+                                    <a class="button button-round show-item__button_tip">公寓相册 > </i></a>
+                                    <a class="tab-link active show-item__tab-link center" data-tab=".modal{$i}tab1">
+                                        <div class="center flex-column">
+                                            <i class='fa fa-photo'></i>
+                                            <span>实景图</span>
+                                        </div>
+                                    </a>
+                                    <a class="tab-link show-item__tab-link center" data-tab=".modal{$i}tab2">
+                                        <div class="center flex-column">
+                                            <i class='fa fa-building'></i>
+                                            <span>户型图</span>
+                                        </div>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </volist>
+    </div>
+</block>
+
+<block name="script">
+	<script position="page" src='https://api.mapbox.com/mapbox.js/v3.0.1/mapbox.js'></script>
+    <script position="page">
+        var room_list = [];
+        var numList = "";
+    	$(function() {
+            <volist name='info["room_list"]' id="vo">
+                room_list.push({
+                    video:'{$vo["video"]}',
+                    VR:'{$vo["vr"]}'
+                });
+            </volist>
+
+            var _numList = "";
+            // 查看详情
+            $('.show-room-modal').on('click', function(event) {
+                event.preventDefault();
+                var index = $(this).attr('data-index');
+                $('.room-modal-fade').show();
+                $('.room-modal'+ index).css('z-index','100');
+            });
+            $(document).delegate('.room-modal-fade', 'click', function(event) {
+                event.stopPropagation();
+                $('.room-modal').css('z-index','-10');
+                $('.room-modal-fade').hide();
+            });
+            $(document).delegate('.fa-remove', 'click', function(event) {
+                event.stopPropagation();
+                $('.room-modal').css('z-index','-10');
+                $('.room-modal-fade').hide();
+            });
+
+            // 收藏
+            $('.ajax-mark').unbind('click').bind('click', function(event) {
+                event.preventDefault();
+                var target;
+                var that = this;
+                if (target = $(this).attr('url')) {
+                    $.get(target).done(function(data){
+                        if (data.status == 1) {
+                            if(data.follow_status == 1){
+                                $(that).text('已收藏');
+                                $.alertMessager(data.info, 'success');
+                            }else{
+                                $(that).text('收藏房源');
+                                $.alertMessager(data.info, 'success');
+                            }
+                        } else {
+                            if(data.login == 1){
+                                location.href = '{:U("User/User/login")}';
+                            }else{
+                                $.alertMessager(data.info, 'danger');
+                            }
+                        }
+                    });
+                }
+            });
+
+            // 房源选择
+
+            $('.room-item_normal').unbind('click').bind('click', function (e) {
+                var fa = $(this).find('.fa');
+                var number = fa.attr('data-number');
+                if (!$(e.target).hasClass('button')) { //当用户点击查看详情按钮时不将公寓号码作为已选房源
+                    if (!fa.hasClass('fa-check-circle')) {
+                        // 选择
+                        if (fa.hasClass('fa-circle-o')) {
+                            fa.removeClass('fa-circle-o').addClass('fa-check-circle-o');
+                        }
+                        $(this).css('border', '1px solid #ff7733');
+                        fa.removeClass('fa-check-circle-o').addClass('fa-check-circle');
+                        fa.parents('.bg-white').css('border', '1px solid #ff7733');
+                        var inner = '<a class="button center room-selected">'+number+'<span class="remove_cur_room" data-number="'+number+'">清除</span></a>';
+                        if (_numList == "") {
+                            _numList = number;
+                        } else {
+                            var numList = _numList.split(',');
+                            numList.push(number);
+                            _numList = numList.join(",");
+                        }
+                        $('.room-select__container').append(inner);
+                    } else {
+                        //取消选择效果如果效果已经存在
+                        fa.removeClass('fa-check-circle').addClass('fa-circle-o');
+                        $(this).css('border', 'none');
+                        $('.room-select__container').each(function (index, el) {
+                            if ($(el).find(`[data-number='${number}']`)){
+                                $(el).find(`[data-number='${number}']`).parent().remove();
+                            }
+                        });
+                        //去除感兴趣公寓号码input中的号码
+                        var numList = _numList.split(',').filter(num => num != number);
+                        if (numList.length == 1) {
+                            _numList = numList[0];
+                        } else {
+                            _numList = numList.join(",");
+                        }
+                    }
+                }
+            });
+
+            $(document).delegate('.remove_cur_room', 'click', function(event) {
+                var number = $(this).attr('data-number');
+                $('.room-item_normal').each(function(index, el) {
+                    if($(el).find('.fa').attr('data-number') == number) {
+                        $(el).css('border-color','#fff');
+                        $(el).find('.fa').removeClass('fa-check-circle').addClass('fa-circle-o');
+                    } else {
+                    }
+                });
+                var numList = _numList.split(',').filter(num => num != number);
+                if (numList.length == 1) {
+                    _numList = numList[0];
+                } else {
+                    _numList = numList.join(",");
+                }
+                $(this).parent('.room-selected').remove();
+            });
+
+
+
+            // 立即咨询
+            $('.show-consult-modal').on('click', function () {
+                var number = $('.room-selected').text();
+                if(!number) {
+                    number = '';
+                }
+                var rid = {$_GET['id']};
+                var consult_json = '{$consult_json}';
+
+                if(consult_json) {
+                    consult_json = JSON.parse(consult_json);
+                } else {
+                    consult_json = new Object();
+                    consult_json['name'] = '';
+                    consult_json['area_code'] = '';
+                    consult_json['mobile'] = '';
+                    consult_json['email'] = '';
+                    consult_json['wechat'] = '';
+                    consult_json['comment'] = '';
+                }
+
+                var modal = myApp.modal({
+                    title: '请填写以下信息以便我们更好的为您服务',
+                    afterText:  '<form action="{:U(\'Rent/Consult/index\')}" method="POST" class="form-consult"><div class="list-block inset find-roommate-modal"><input type="hidden" name="rid" value="'+rid+'"/><input type="hidden" name="number" value="'+number+'"/><ul>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">姓名</div>'
+                                    +'<div class="item-input"><input type="text" name="name"  value='+consult_json.name+'></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">区号</div>'
+                                    +'<div class="item-input"><input type="text" name="area_code" value='+consult_json.area_code+'></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">手机号</div>'
+                                    +'<div class="item-input"><input type="text" name="mobile" value="'+consult_json.mobile+'" /></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">入住时间</div>'
+                                    +'<div class="item-input"><input type="text" id="picker-date" readonly name="rent_date"/></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">咨询公寓号</div>'
+                                    +'<div class="item-input"><input type="text" name="number" value="' + _numList + '" disabled/></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">邮箱</div>'
+                                    +'<div class="item-input"><input type="text" name="mail" value='+consult_json.email+'></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">微信</div>'
+                                    +'<div class="item-input"><input type="text" name="wechat" value='+consult_json.wechat+'></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">优惠推荐码</div>'
+                                    +'<div class="item-input"><input type="text" name="code"></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner">'
+                                    +'<div class="item-title label">其他信息</div>'
+                                    +'<div class="item-input"><textarea name="comment" value='+consult_json.comment+'>'+consult_json.comment+'</textarea></div>'
+                                    +'</div></div></li>'
+                                    +'<li><div class="item-content"><div class="item-inner" style="justify-content: space-around;margin:10px 0;">'
+                                    +'<button type="submit" class="button button-orange ajax-post" target-form="form-consult">提交</button><button type="button" class="button close-modal" style="color:#ff7733;border-color:#ff7733;">取消</button>'
+                                    +'</div></div></li>'
+                               +'</ul></div></form>'
+                });
+
+                // 时间选择
+                var today = new Date();
+                
+                var pickerInline = myApp.picker({
+                    input: '#picker-date',
+                    rotateEffect: true,
+                    // value: [today.getMonth(), today.getDate(), today.getFullYear(), today.getHours(), (today.getMinutes() < 10 ? '0' + today.getMinutes() : today.getMinutes())],
+                    onChange: function (picker, values, displayValues) {
+                        var daysInMonth = new Date(picker.value[2], picker.value[0]*1 + 1, 0).getDate();
+                        if (values[1] > daysInMonth) {
+                            picker.cols[1].setValue(daysInMonth);
+                        }
+                    },
+                    formatValue: function (p, values, displayValues) {
+                        return values[0] + "-" + displayValues[1] + '-' + values[2];
+                    },
+                    cols: [
+                        // Years
+                        {
+                            values: (function () {
+                                var arr = [];
+                                for (var i = 2017; i <= 2030; i++) { arr.push(i); }
+                                return arr;
+                            })(),
+                        },
+                        // Months
+                        // Space divider
+                        {
+                            divider: true,
+                            content: '-'
+                        },
+                        {
+                            values: ('0 1 2 3 4 5 6 7 8 9 10 11').split(' '),
+                            displayValues: (function () {
+                                var arr = [];
+                                for (var i = 1; i <= 12; i++) { arr.push(i < 10 ? '0' + i : i); }
+                                return arr;
+                            })(),
+                            textAlign: 'left'
+                        },
+                        {
+                            divider: true,
+                            content: '-'
+                        },
+                        {
+                            values: (function () {
+                                var arr = [];
+                                for (var i = 1; i <= 31; i++) { arr.push(i < 10 ? '0' + i : i); }
+                                return arr;
+                            })()
+                        }
+                    ]
+                });
+
+                $(document).delegate('.close-modal', 'click', function(event) {
+                    myApp.closeModal(modal);
+                });
+            });
+
+            // mapbox
+            L.mapbox.accessToken = 'pk.eyJ1IjoiYmxpbmRzcG90IiwiYSI6ImNpbW9sdG42YzAwZzZ2a2t5NXY3aTZpbmgifQ.bK7d-lqGLQmZVe9Z2QHHEA';
+            var latlng = '{$info.address_gps}';
+            latlng = latlng.split(',');
+
+            var map = L.mapbox.map('map', 'mapbox.streets').setView([Number(latlng[0]),Number(latlng[1])], 13);
+            map.scrollWheelZoom.disable();
+            L.marker([Number(latlng[0]),Number(latlng[1])],{
+                icon: L.mapbox.marker.icon({
+                    'marker-color': 'ff8888'
+                }),
+                draggable: false
+            }).addTo(map);
+            // 初始化地图
+            function initial_map(data) {
+                // mapbox
+                L.mapbox.accessToken = 'pk.eyJ1IjoiYmxpbmRzcG90IiwiYSI6ImNpbW9sdG42YzAwZzZ2a2t5NXY3aTZpbmgifQ.bK7d-lqGLQmZVe9Z2QHHEA';
+                var map = L.mapbox.map('mapbox', 'mapbox.streets').setView(data[0].address_gps.split(','), 12);
+                // 创建标点
+                create_marker(data,map);
+            }
+
+            function create_marker(data,map) {
+                for(var i in data) {
+                    var info = '<div><a href="'+data[i].infowindow_href+'"><img class="infowindow-img" src="'+ data[i].cover_url + '"><p>'+ data[i].title +'</p><ul class="list-inline"><li>'+data[i].min_bedroom_count+'-'+data[i].max_bedroom_count+'</li></ul></a></div>';
+                    var label = '<div class="price_label my-marker'+ data[i].id +'"><small>$</small>'+ data[i].min_price+'-<small>$</small>'+data[i].max_price+'<span class="fa fa-sort-desc"></div>';
+                    var myIcon = L.divIcon({html: label});
+                    setdivIcon(data[i].address_gps.split(','),myIcon,info,map);
+                }
+            }
+            function setdivIcon(position,myIcon,info,map){
+                L.marker(position, {icon: myIcon}).bindPopup(info,{minWidth:200}).addTo(map);
+            }
+
+            var videoHTML = '{$info["video"]}';
+            if (videoHTML){
+                //延迟加载视频
+                $("#video").html(videoHTML);
+            }
+
+    	});
+
+        function loadRoomDetail(i){
+            //延迟加载视频以及VR
+            if (room_list[i-1].video){
+                if ($(`#modal${i}-video`).is(':empty')){
+                    $(`#modal${i}-video`).html(room_list[i-1].video);
+                }
+
+                if($(`#modal${i}-VR`).is(':empty')){
+                    var vrHtml = `<iframe height="100%" width="100%" src="${room_list[i-1].VR}&play=1&qs=1" frameborder="0" allowfullscreen></iframe>`;
+                    $(`#modal${i}-VR`).html(vrHtml);
+                }
+            }else{
+                //如果视频为空直接加载VR
+                if($(`#modal${i}-VR`).is(':empty')){
+                    var vrHtml = `<iframe height="100%" width="100%" src="${room_list[i-1].VR}&play=1&qs=1" frameborder="0" allowfullscreen></iframe>`;
+                    $(`#modal${i}-VR`).html(vrHtml);
+                }
+            }
+        }
+    </script>
+</block>

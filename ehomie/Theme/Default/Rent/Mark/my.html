@@ -1,0 +1,209 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style type="text/css">
+        .avatar-container {
+            display: inline-block;
+            margin: auto;
+            position: relative;
+        }
+        .avatar-container span {
+            position: absolute;
+            left: 20px;
+            right: 20px;
+            top: 20px;
+            bottom: 20px;
+            border-radius: 100%;
+            color: #999;
+            font-size: 12px;
+            opacity: 0.7;
+            z-index: 1000;
+            background: #fff;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            -webkit-justify-content: center;
+            -webkit-align-items: center;
+        }
+        .navbar-exej .navbar-header img {
+            margin-left: 15px;
+        }
+        .navbar-exej .navbar-right {
+            margin-right: 0;
+        }
+        .grzx{
+            padding-top:15px;
+        }
+        .panel-touxiang{
+            border: 1px solid #999;
+            border-radius: 0px;
+        }
+        .panel-touxiang > div > div{
+            width: 90%;
+            margin:0px auto;
+        }
+        .panel-touxiang > div > div img {
+            width: 90%;
+            margin:auto;
+        }
+        .panel-touxiang > div > div button{
+            width: 100%;
+            margin-top: 30px;
+
+        }
+        .panel-grxz{
+            border: 1px solid #999;
+            border-radius: 0px;
+            margin-bottom: 30px;
+        }
+        .panel-grxz .panel-heading{
+            height: 60px;
+            border-bottom: 1px solid #999;
+            border-radius: 0px;
+        }
+        .panel-grxz .panel-heading p{
+            font-size: 18px;
+            color: #666666;
+            padding-top: 5px;
+            padding-left: 15px;
+        }
+        /*列表*/
+        .rent-item {
+            margin-top: 20px;
+            background-color: #fff;
+            border: 1px solid #888;
+        }
+
+        .rent-item_list{
+            min-height:540px;
+        }
+
+        .rent-item__img_cover {
+            height: 250px;
+            width: 100%;
+        }
+        .rent-item__compose {
+            padding: 8px 0px 8px 8px;
+        }
+        .rent-item__title {
+            font-size: 15px;
+            max-width: 55%;
+            overflow: hidden;
+            display: inline-block;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .rent-item__bedroom {
+            font-size: 14px;
+            color: #888;
+        }
+        .rent-item__price-label {
+            position: absolute;
+            right: 15px;
+            bottom: 86px;
+            background-color: #333;
+            opacity: 0.8;
+            font-size: 23px;
+            font-weight: bold;
+            color: #fff;
+            padding: 0px 6px;
+        }
+        .rent-item small {
+            position: relative;
+            top: -1em;
+            font-size: 13px;
+        }
+        .rent-item__tag {
+            margin-right: 10px;
+        }
+        .rent-item__tag:last-child {
+            margin-right: 0;
+        }
+
+
+    </style>
+</block>
+
+<block name="jumbotron"></block>
+
+<block name="main">
+    <div class="grzx">
+        <div class="container">
+            <div class="col-xs-3">
+                <div class="panel panel-touxiang">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <notempty name='user_info["avatar"]'>
+                                <a href="{:U('User/Center/avatar')}">
+                                    <div class="avatar-container center">
+                                        <img alt="logo" class="avatar img-circle" style="width:80px;height:80px;margin:20px;" src="{$user_info['avatar']|get_cover='roommate'}">
+                                        <span>更换头像</span>
+                                    </div>
+                                </a>
+                            <else/>
+                                <a href="{:U('User/Center/avatar')}">
+                                    <div class="avatar-container">
+                                        <img alt="logo" class="avatar img-circle" style="width:80px;height:80px;margin:20px;" src="__HOME_IMG__/default/roommate.png">
+                                        <span>更换头像</span>
+                                    </div>
+                                </a>
+                            </notempty>
+                            <p>{$user_info.nickname}</p>
+                            <p style='font-size: 10px;color: #888;'>{$user_info['email'] == "" ? $user_info['username']:$user_info['email']}</p>
+                            <a href="{:U('User/User/logout')}"><button class="btn btn-orange">退出</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div class="panel panel-grxz">
+                    <div class="panel-heading">
+                        <p>收藏的房源</p>
+                    </div>
+                    <div class="panel-body rent-item_list">
+                        <volist name="data_list" id='vo' empty='您暂时没有收藏的房源哦!'>
+                            <div class="col-xs-6">
+                                <div class="rent-item hightlight_marker" data-marker="my-marker{$vo.id}" data-gps="{$vo['address_gps']}">
+                                    <div class="rent-item__img_compose">
+                                        <a href="{:U('Rent/Index/detail', array('id' => $vo['id']))}" target="_blank">
+                                            <img class='rent-item__img_cover' src="{$vo.cover|get_cover='cover'}" >
+                                        </a>
+                                        <div class="rent-item__price-label">
+                                            <small>$</small>{$vo.min_price|number_format}-<small>$</small>{$vo.max_price|number_format}
+                                        </div>
+                                    </div>
+                                    <div class="rent-item__compose">
+                                        <span class="rent-item__title">{$vo['title']}</span>
+                                        <span class="pull-right">
+                                            <volist name="vo['tags']" id='v'>
+                                                <a class="btn btn-orange rent-item__tag">{$v}</a>
+                                            </volist>
+                                        </span>
+                                        <div class="rent-item__bedroom">
+                                            {$vo['min_bedroom_count']}-{$vo['max_bedroom_count']}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </volist>
+                    </div>
+                    <!-- 分页 -->
+                    <div class="text-center">
+                        <ul class="pagination">{$page}</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script>
+        $(function(){
+            $('.avatar-container').hover(function() {
+                $('.avatar-container').find('span').css('display', 'flex');
+            }, function() {
+                $('.avatar-container').find('span').css('display', 'none');
+            });
+        })
+    </script>
+</block>
+

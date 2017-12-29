@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta framework="framework7">
+    <meta charset="utf-8">
+    <block name='title'><title>{:C('WEB_SITE_TITLE')}</title></block>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta name="author" content="{:C('WEB_SITE_TITLE')}">
+    <meta name="keywords" content="{$meta_keywords}">
+    <meta name="description" content="{$meta_description}">
+    <meta name="generator" content="OpenCMF">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <block name='app-title'><meta name="apple-mobile-web-app-title" content="{:C('WEB_SITE_TITLE')}"></block>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <link rel="shortcut icon" type="image/x-icon" href="__ROOT__/favicon.ico">
+    <link rel="apple-touch-icon" type="image/x-icon" href="__ROOT__/logo.png">
+    <link rel="stylesheet" href="__PUBLIC__/libs/framework7/css/framework7.ios.min.css">
+    <link rel="stylesheet" href="__HOME_LIBS__/toast/toast.css">
+    <link rel="stylesheet" href="__LYUI__/css/lyicon.css">
+    <link rel="stylesheet" href="__HOME_CSS__/home.css">
+    <link rel="stylesheet" href="__PUBLIC__/libs/framework7/css/framework7.ios.colors.min.css">
+    <block name="style"></block>
+    <script type="text/javascript" src="http://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <script type="text/javascript">
+        window.jQuery || document.write('<script type="text/javascript" src="__PUBLIC__/libs/jquery/2.x/jquery.min.js"><\/script>');
+        var OpenCMF = window.OpenCMF = {
+            "TOP_HOME_PAGE" : "{:C('TOP_HOME_PAGE')}",
+            "HOME_PAGE" : "{:C('HOME_PAGE')}",
+            "VAR_ROOT"  : "__ROOT__",
+            "DEFAULT_IMG" : "{:get_cover('', 'default')}"
+        }
+    </script>
+</head>
+<body>
+    <div class="panel-overlay"></div>
+    <div class="panel panel-right panel-reveal layout-dark">
+        <present name='info["cover_url"]'>
+        <img src="{$info['cover_url']}" alt="logo" width="0" height="0">
+        </present>
+        <div class="list-block accordion-list">
+            <ul>
+                <present name="_user_auth">
+                    <li>
+                        <div class="center flex-column" style='height: 200px'>
+                            <a href="{:U('Rent/Mark/my')}"><img style="height: 70px;width: 70px;border-radius: 100%;" src="{$_user_auth['avatar_url']}" alt=""></a>
+                            <div><small>{$_user_auth['email']}</small></div>
+                        </div>
+                    </li>
+                <else/>
+                    <li>
+                        <div class="center flex-column" style='height: 200px'>
+                            <a href="{:U('User/User/login')}"><img style="height: 70px;width: 70px;border-radius: 100%;" src="__HOME_IMG__/roommate.png" alt=""></a>
+                            <p><a href="{:U('User/User/login')}">请登陆</a></p>
+                        </div>
+                    </li>
+                </present>
+                <li>
+                    <a href="{:U('Home/Index/index')}" class="item-link close-panel">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">首页</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Rent/Index/index')}" class="item-link close-panel">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">找房</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a class="item-link">
+                        <div class="item-content entrust-modal">
+                            <div class="item-inner">
+                                <div class="item-title">委托找房</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{:U('Rent/Index/knowledge')}" class="item-link close-panel">
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">租前须知</div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+                <li class="accordion-item">
+                    <a class="item-link item-content">
+                        <div class="item-inner">
+                            <div class="item-title">关于e乡e家</div>
+                        </div>
+                    </a>
+                    <div class="accordion-item-content">
+                        <div class="list-block no-margin">
+                            <ul>
+                                <opencmf:nav_list name="vo" pid="0" group="bottom">
+                                    <li>
+                                        <a href="{$vo.href}" class="item-link close-panel">
+                                            <div class="item-content">
+                                                <div class="item-inner">
+                                                    <div class="item-title">{$vo.title}</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </li>
+                                </opencmf:nav_list>
+                            </ul>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <present name="_user_auth">
+            <div class="cotent-block center">
+                <a href="{:U('User/User/logout')}" class="button color-red button-fill">退出登陆</a>
+            </div>
+        </present>
+    </div>
+
+    <!-- 视图合集 -->
+    <div class="views tabs toolbar-through theme-opencmf">
+        <div class="view view-main active" id="view-main" data-page="{$_page_name}">
+            <div class="pages navbar-through toolbar-through">
+                <block name="main">
+                </block>
+            </div>
+        </div>
+    </div>
+    <block name='popup'></block>
+
+    <div class="full-script">
+        <script type="text/javascript" src="__PUBLIC__/libs/framework7/js/framework7.min.js"></script>
+        <script type="text/javascript" src="__HOME_LIBS__/toast/toast.js"></script>
+        <script type="text/javascript" src="__HOME_JS__/home.js"></script>
+        <script type="text/javascript">
+            var myApp = new Framework7({
+                cacheDuration: 60000,
+                pushState: true,
+                pushStateSeparator: "",
+                pushStateRoot: undefined,
+                scrollTopOnStatusbarClick: true,
+                uniqueHistory: true,
+                modalTitle: '{C("WEB_SITE_TITLE")}',
+                modalButtonOk: '确定',
+                modalButtonCancel: '取消',
+                modalPreloaderTitle: '加载中...',
+                modalUsernamePlaceholder: '用户名',
+                modalPasswordPlaceholder: '密码',
+                smartSelectBackText: '返回',
+                smartSelectBackOnSelect: true,
+                ajaxLinks: '.smart-select',
+                observer: true,
+                observeParents: true,
+                // Hide and show indicator during ajax requests
+                onAjaxStart: function (xhr) {
+                    myApp.showIndicator();
+                },
+                onAjaxComplete: function (xhr) {
+                    myApp.hideIndicator();
+                },
+                onPageInit: function (app, page) {
+                    // 应用单页的独立样��?
+                    if (page.view) {
+                        if (page.view.activePage.view.xhr) {
+                            var filter = /^\{.*?\}$/;
+                            if(filter.test(page.view.activePage.view.xhr.response)){
+                                var data = eval('(' + page.view.activePage.view.xhr.response + ')');
+                                execute_style(data.html);
+                            } else {
+                                execute_style(page.view.activePage.view.xhr.response);
+                            }
+                        }
+                    }
+                }
+            });
+            var toast = myApp.toast('Marked star', '<div>☆</div>', {});
+            var $$ = Framework7.$;
+            var mainView = myApp.addView('.view-main', {
+                dynamicNavbar: true,
+                preprocess: function (content, url, next) {
+                    var filter  = /^\{.*?\}$/;
+                    if(filter.test(content)){
+                        myApp.hideIndicator();
+                        var obj = eval('(' + content + ')');
+                        var html = obj.html;
+                        if(html && (html.indexOf('<meta framework="framework7">') >= 0)) {
+                            next(html);
+                            execute_script(html);  // 手动执行Ajax页面的私有js
+                        } else {
+                            if (obj.status === '1') {
+                                $.alertMessager(obj.info, 'success');
+                            } else {
+                                $.alertMessager(obj.info, 'danger');
+                            }
+                            if (obj.url) {
+                                //mainView.router.loadPage(obj.url);
+                                location.href = obj.url;
+                            }
+                            return 'undefined';
+                        }
+                    } else {
+                        next(content);
+                        execute_script(content);  // 手动执行Ajax页面的私有js
+                    }
+                }
+            });
+
+            $(function(){
+                // 非主页打开时返回按钮生��?
+                if ('__SELF__' != '__ROOT__/') {
+                    $('a.back').removeClass('back');
+                    if ($('.page').hasClass('no-toolbar')) {
+                        $('.view-main>.toolbar.tabbar').addClass('toolbar-hidden');
+                    }
+                    if ($('.page').hasClass('no-navbar')) {
+                        $('.navbar').addClass('navbar-hidden');
+                    }
+                }
+
+                // 修复关闭路由时TAB问题
+                $(document).on('click', 'a.tab-link', function(e) {
+                    e.preventDefault();
+                });
+
+                // 修复关闭路由时返回按��?
+                $(document).on('click', '.navbar-inner>.left>a.link', function(e) {
+                    if (history.length > 0) {
+                        history.back();
+                        e.preventDefault();
+                    }
+                });
+
+                // 主导航如果没有当前URL完全一致的页面则高亮当前页面所在的模块
+                var $nav_list = $(".toolbar-inner");
+                var $current = $nav_list.find("a.active");
+                if ($current.length == 0) {
+                    var url = "<?php echo U('/'.MODULE_NAME, '', true, true); ?>";
+                    $('.toolbar-inner a[href="' + url + '"]').addClass('active');
+                }
+                $('.entrust-modal').on('click', function () {
+                    var modal = myApp.modal({
+                        title: '请填写以下信息以便我们更好的为您服务',
+                        afterText:  '<form action="{:U(\'Rent/Entrust/index\')}" method="POST" class="form-roommate dropzone"><div class="list-block inset find-roommate-modal"><ul>'
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">姓名</div>'
+                                        +'<div class="item-input"><input type="text" name="name" placeholder="必填"></div>'
+                                        +'</div></div></li>'
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">区号</div>'
+                                        +'<div class="item-input"><input type="text" name="area_code" placeholder="必填"></div>'
+                                        +'</div></div></li>'
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">号码</div>'
+                                        +'<div class="item-input"><input type="text" name="mobile" placeholder="必填"></div>'
+                                        +'</div></div></li>'
+
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">邮箱</div>'
+                                        +'<div class="item-input"><input type="text" placeholder="选填" name="email"/></div>'
+                                        +'</div></div></li>'
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">微信</div>'
+                                        +'<div class="item-input"><input type="text" name="wechat" placeholder="建议填写"/></div>'
+                                        +'</div></div></li>'
+                                        +'<li><div class="item-content"><div class="item-inner">'
+                                        +'<div class="item-title label">QQ</div>'
+                                        +'<div class="item-input"><input type="text" name="qq" placeholder="选填"></div>'
+                                        +'</div></div></li>'
+                                        +'<li>'
+                                            +'<div class="item-content">'
+                                                +'<div class="item-inner">'
+                                                    +'<div class="item-title label">看房种类</div>'
+                                                    +'<div class="item-input">'
+                                                        +'<select name="type">'
+                                                            +'<option value="remote">远程看房</option>'
+                                                            +'<option value="local">本地看房</option>'
+                                                        +'</select>'
+                                                    +'</div>'
+                                                +'</div>'
+                                            +'</div>'
+                                        +'</li>'
+                                        +'<li><div class="item-content"><div class="item-inner" style="justify-content: space-around;margin:10px 0;">'
+                                        +'<button type="submit" class="button button-orange ajax-post" target-form="form-roommate">提交</button><button type="button" class="button close-modal" style="color:#ff7733;border-color:#ff7733;">取消</button>'
+                                        +'</div></div></li>'
+                                   +'</ul></div></form>'
+                    });
+
+                    $('.close-modal').click(function(){
+                        myApp.closeModal(modal);
+                    });
+                });
+            });
+
+            if ($(".toolbar-inner>a").eq(0).html() !== "收藏房源"){
+                (function(m, ei, q, i, a, j, s) {
+                    m[i] = m[i] || function() {
+                        (m[i].a = m[i].a || []).push(arguments);
+                    };
+                    j = ei.createElement(q),
+                        s = ei.getElementsByTagName(q)[0];
+                    j.async = true;
+                    j.charset = 'UTF-8';
+                    j.src = '//static.meiqia.com/dist/meiqia.js';
+                    s.parentNode.insertBefore(j, s);
+                })(window, document, 'script', '_MEIQIA');
+                _MEIQIA('entId', 47432);
+            }
+        </script>
+        <block name="script"></block>
+    </div>
+</body>
+</html>

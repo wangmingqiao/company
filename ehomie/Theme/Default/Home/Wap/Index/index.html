@@ -1,0 +1,324 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style position="page">
+        .home-top__title {
+            left: 0;
+            right: 0;
+            color: #fff;
+        }
+        .home-top__title h1 {
+            margin-bottom: 0;
+            font-size: 25px;
+        }
+        .home-top__title p {
+            margin-top: 5px;
+        }
+        .myvideo {
+            width: 100%;
+        }
+        .input-box {
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 2rem;
+            background-color: #fff;
+            width: 85%;
+            height: 37px;
+            border-radius: 5px;
+        }
+        .input-box__input {
+            width: calc(100% - 60px);
+            line-height: 37px;
+            border: none;
+            padding: 0 15px;
+            border-radius: 5px;
+            background: none;
+        }
+        .input-box__i {
+            color: #ff7733;
+            z-index: 10;
+        }
+        .feature_img {
+            width: 90px;
+        }
+        .suburb-item {
+            height: 180px;
+            background-size: 100% 100%;
+            margin-bottom: 15px;
+            opacity: 0.8;
+        }
+        .suburb-item__title {
+            color: #fff;
+            font-size: 17px;
+            text-shadow: 0px 0px 3px #aaa;
+        }
+        .story-item {
+            height: 160px;
+            background-size: 100% 100%;
+        }
+        .story-item__title,.story-item__abstract {
+            color: #fff;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            padding: 0 5px;
+        }
+        .flow-item__img {
+            width: 80px;
+        }
+        .gray {
+            color: #888;
+        }
+        .flow-item__card {
+            height: 195px;
+        }
+
+        @media screen and (max-width: 320px){
+            /* for Iphone 5s screens */
+            .for-space{
+                font-size:12px;
+            }
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content">
+            <div class="content-block no-margin no-padding pos-r">
+                <div class="center flex-column home-top__title pos-a">
+                    <h1 class="for-dream">为梦想<span style="display: inline-block;width: 20px;"></span>租好房</h1>
+                    <p class="for-space">If you can make it here, you can make it anywhere.</p>
+                </div>
+                <video class="myvideo background" id="_myvideo" x-webkit-airplay="true" webkit-playsinline="true" autoplay="autoplay" loop="loop">
+                    <source src="__HOME_IMG__/11.mp4" type="video/mp4" />
+                </video>
+                <div class="input-box pos-a">
+                <form class="form-inline home-top__form text-center" action="{:U('Rent/Index/index')}" >
+                    <input type="text" class="input-box__input" name='keyword' placeholder="请输入区域如曼哈顿">
+                    <button style='border:none;background: none;padding:0;' type="submit"><i class="fa fa-search search-btn input-box__i"></i></button>
+                </form>
+                </div>
+                <button id="clickme" onclick="hah()" style="display: none;"></button>
+            </div>
+            <!-- 形容词快 -->
+            <div class="content-block" style='margin-top: 0;'>
+                <div class="content-block-inner">
+                    <div class="row">
+                        <div class="col-50 text-center feature-item">
+                            <img class="feature_img" src="__HOME_IMG__/smart.png" alt="">
+                            <h4>智能</h4>
+                            <p class="gray">VR看房 突破异地看房限制</p>
+                        </div>
+                        <div class="col-50 text-center feature-item">
+                            <img class="feature_img"  src="__HOME_IMG__/professional.png" alt="">
+                            <h4>专业</h4>
+                            <p  class="gray">海外顾问 一站式租房服务</p>
+                        </div>
+                        <div class="col-50 text-center feature-item">
+                            <img class="feature_img"  src="__HOME_IMG__/free.png" alt="">
+                            <h4>免费</h4>
+                            <p  class="gray">零服务费 房租透明无溢价</p>
+                        </div>
+                        <div class="col-50 text-center feature-item">
+                            <img class="feature_img" src="__HOME_IMG__/efficiency.png" alt="">
+                            <h4>高效</h4>
+                            <p  class="gray">24小时服务 快速匹配潜在室友</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content-block-title text-center">
+                <h3>全面覆盖纽约热门地点</h3>
+            </div>
+            <div class="content-block">
+                <div class="row">
+                    <div class="col-100 suburb-item center" style="background-image: url(__HOME_IMG__/index/city1.jpg);">
+                        <a href="{:U('Rent/Index/index',array('suburb'=>'曼哈顿Manhattan'))}"><p class='suburb-item__title'>曼哈顿</p></a>
+                    </div>
+                    <div class="col-50 suburb-item center" style="background-image: url(__HOME_IMG__/index/city2.jpg);">
+                        <a href="{:U('Rent/Index/index',array('suburb'=>'皇后区Queens'))}">
+                        <p class='suburb-item__title'>皇后区</p>
+                        </a>
+                    </div>
+                    <div class="col-50 suburb-item center" style="background-image: url(__HOME_IMG__/index/city3.jpg);">
+                        <a href="{:U('Rent/Index/index',array('suburb'=>'布鲁克林Brooklyn'))}">
+                        <p class='suburb-item__title'>布鲁克林</p>
+                        </a>
+                    </div>
+                    <div class="col-50 suburb-item center" style="background-image: url(__HOME_IMG__/index/city4.jpg);">
+                        <a href="{:U('Rent/Index/index',array('suburb'=>'新泽西NewJersey'))}">
+                        <p class='suburb-item__title'>新泽西</p>
+                        </a>
+                    </div>
+                    <div class="col-50 suburb-item center" style="background-image: url(__HOME_IMG__/index/city5.jpg);">
+                        <a href="{:U('Rent/Index/index',array('suburb'=>'其他区域'))}">
+                        <p class='suburb-item__title'>其他区域</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block no-margin">
+                <div class="content-block-inner  no-after">
+                    <h3 class="text-center" style="color: #6d6d72;">我的故事，在纽约</h3>
+                    <div class="row">
+                        <cms:article_list name="vo" cid="0" limit="3">
+                            <div class="col-33 story-item pos-r" style="background-image: url({$vo['cover']|get_cover='default'})">
+                                <a href="{:U('Cms/Index/detail',array('id' => $vo['id']))}"  style="box-sizing: border-box;">
+                                    <p class='story-item__title text-center pos-a'>{$vo.title}</p>
+                                </a>
+                            </div>
+                        </cms:article_list>
+                    </div>
+                </div>
+            </div>
+            <div class="content-block no-margin ">
+                <div class="content-block-inner no-before">
+                    <h3 class="text-center" style="color: #6d6d72;">租房流程</h3>
+                    <div class="swiper-container swiper-init" data-next-button='.swiper-button-next' data-prev-button='.swiper-button-prev'>
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="card flow-item__card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <span class="badge">1</span>
+                                            <div class="row center">
+                                                <div class="col-40 center">
+                                                    <img class="flow-item__img" src="__HOME_IMG__/choose.png" alt="">
+                                                </div>
+                                                <div class="col-60">
+                                                    <h3 class="gray">多维选房</h3>
+                                                    <p class="gray">通过线上看房、远程看房、或实地看房选定房源</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card flow-item__card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <span class="badge">2</span>
+                                            <div class="row center">
+                                                <div class="col-40 center">
+                                                    <img class="flow-item__img" src="__HOME_IMG__/consult.png" alt="">
+                                                </div>
+                                                <div class="col-60">
+                                                    <h3 class="gray">专属咨询</h3>
+                                                    <p class="gray">一对一顾问，24小时服务解答疑问</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card flow-item__card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <span class="badge">3</span>
+                                            <div class="row center">
+                                                <div class="col-40 center">
+                                                    <img class="flow-item__img" src="__HOME_IMG__/match.png" alt="">
+                                                </div>
+                                                <div class="col-60">
+                                                    <h3 class="gray">智能匹配</h3>
+                                                    <p class="gray">高效信息管理系统，快速匹配室友</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card flow-item__card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <span class="badge">4</span>
+                                            <div class="row center">
+                                                <div class="col-40 center">
+                                                    <img class="flow-item__img" src="__HOME_IMG__/sign.png" alt="">
+                                                </div>
+                                                <div class="col-60">
+                                                    <h3 class="gray">申请签约</h3>
+                                                    <p class="gray">协助完成公寓申请和签约</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="card flow-item__card">
+                                    <div class="card-content">
+                                        <div class="card-content-inner">
+                                            <span class="badge">5</span>
+                                            <div class="row center">
+                                                <div class="col-40 center">
+                                                    <img class="flow-item__img" src="__HOME_IMG__/service.png" alt="">
+                                                </div>
+                                                <div class="col-60">
+                                                    <h3 class="gray">配套服务</h3>
+                                                    <p class="gray">根据您特定的需求，提供接机、家具等定制服务</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-button-prev"></div>
+                        <div class="swiper-button-next"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+<block name="script">
+    <script position="page">
+        myApp.swiper('.swiper-index', {
+            pagination:'.swiper-index .swiper-pagination',
+            spaceBetween: 50
+        });
+
+
+        //IE
+        if(document.all) {
+            ent.getElementById("clickme").click();
+        }
+        // 其它浏览器
+        else {
+            var e = document.createEvent("MouseEvents");
+            e.initEvent("click", true, true);
+            document.getElementById("clickme").dispatchEvent(e);
+            console.log('aa');
+        }
+        function hah(){
+            var a = document.getElementById('_myvideo');
+            a.play();
+        }
+    </script>
+</block>

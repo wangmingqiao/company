@@ -1,0 +1,196 @@
+/* CoreThink默认样式 */
+body {
+    word-wrap: break-word;
+    word-break:break-all;
+}
+a {
+    text-decoration: none!important;
+}
+.panel {
+    box-shadow: none;
+}
+.jumbotron {
+    margin-bottom: 20px;
+}
+.badge-vip {
+    font-weight: 300;
+    font-size: 12px;
+    padding: 2px 5px;
+    transform:scale(0.9);
+    margin-top: -2px;
+}
+@media (max-width: 768px) {
+    :root {
+        font-size: 6px;
+    }
+    .contianer {
+        width: 100%;
+    }
+    .panel {
+        margin: 0 -15px;
+    }
+    .jumbotron {
+        margin-bottom: 10px;
+    }
+}
+.main-jumbotron {
+    padding: 30px 0;
+}
+
+/* 主导航 */
+.main-nav {
+    margin-bottom: 0;
+    border-radius: 0;
+    background: #fff;
+    border-top: 0;
+}
+.full-header .navbar-nav>li>a:focus,
+.full-header .navbar-nav>li>a:hover{
+    color: #3fa9f5;
+}
+@media (min-width: 768px) {
+    .main-nav .navbar-brand {
+        padding: 30px 15px;
+        font-size: 30px;
+        color: #3fa9f5;
+    }
+    .main-nav .navbar-brand img {
+        height: 42px;
+        margin-top: -12px;
+        transition: height 500ms;
+        -moz-transition: height 500ms;
+        -webkit-transition: height 500ms;
+        -o-transition: height 500ms;
+    }
+    .main-nav ul.nav>li>a {
+        padding: 30px 20px;
+        transition: padding 500ms;
+        -moz-transition: padding 500ms;
+        -webkit-transition: padding 500ms;
+        -o-transition: padding 500ms;
+    }
+    .main-nav .navbar-form {
+        margin-top: 23px;
+        margin-bottom: 23px;
+        transition: margin 500ms;
+        -moz-transition: margin 500ms;
+        -webkit-transition: margin 500ms;
+        -o-transition: margin 500ms;
+    }
+    .main-nav .navbar-btn {
+        margin-top: 23px;
+        margin-bottom: 23px;
+        transition: margin 500ms;
+        -moz-transition: margin 500ms;
+        -webkit-transition: margin 500ms;
+        -o-transition: margin 500ms;
+    }
+}
+.module-nav {
+    border-top: 0;
+}
+
+/* 页面底部 */
+.footer {
+    border-top: 1px solid #eee;
+    padding-top: 50px;
+    padding-bottom: 10px;
+    background-color: #000;
+    height:auto;
+    width: 100%;
+}
+.footer .footer-list li{
+    margin:auto 10px;
+}
+.footer li a{
+    color: #999;
+}
+.footer .icon{
+    margin-top: 30px;
+}
+.footer .footer-icon{
+    margin:auto 20px;
+    position: relative;
+    border-radius: 50%;
+    background-color: #dcdcdc;
+    font-size: 20px;
+    padding:7px;
+    color: #333;
+}
+@media(max-width: 768px) {
+    .footer {
+        padding: 20px 0;
+    }
+    .footer .footer-list li {
+        margin: 0;
+    }
+}
+/*模态框*/
+.modal-content{
+    border-radius: 0px;
+}
+.login-modal-yxyj .modal-body{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.login-modal-yxyj .modal-body input{
+    border-radius: 0px;
+}
+.login-modal-yxyj .modal-header{
+    background-color:#999999;
+    color:#ffffff;
+    text-align: center;
+}
+.register-modal-yxyj .modal-body{
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.register-modal-yxyj .modal-body input{
+    border-radius: 0px;
+}
+.register-modal-yxyj .modal-header{
+    background-color:#999999;
+    color:#ffffff;
+    text-align: center;
+}
+
+/*分页*/
+.pagination>li>a, .pagination>li>span{
+    color:#ff7733;
+}
+.pagination>li:hover,.pagination>li:hover a{
+    color:#ff7733;
+}
+.pagination>.active>a, .pagination>.active>a:focus,
+.pagination>.active>a:hover, .pagination>.active>span,
+.pagination>.active>span:focus, .pagination>.active>span:hover{
+    background:#ff7733;
+    border-color: #ff7733;
+}
+
+/* 自定义 */
+.center {
+    display: flex;
+    display: -webkit-flex;
+    display: box;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: center;
+    -webkit-align-items: center;
+}
+.start {
+    display: flex;
+    display: -webkit-flex;
+    justify-content: center;
+    -webkit-justify-content: center;
+    align-items: flex-start;
+    -webkit-align-items: flex-start;
+    // align-content: center;
+    // -webkit-align-content: center;
+}
+.flex-column {
+    flex-direction: column;
+    -webkit-flex-direction: column;
+}

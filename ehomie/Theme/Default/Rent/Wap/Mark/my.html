@@ -1,0 +1,155 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style position="page">
+        /*列表*/
+        .rent-item {
+            margin-top: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 3px #aaa;
+        }
+        .rent-item__img_compose {
+            position: relative;
+        }
+        .rent-item__img_cover {
+            height: 100px;
+            width: 100%;
+        }
+        .rent-item__compose {
+            padding: 3px 10px 8px;
+        }
+        .rent-item__title {
+            color: #333;
+            white-space: nowrap;
+            overflow: hidden;
+            display: block;
+            text-overflow: ellipsis;
+        }
+        .rent-item__bedroom {
+            font-size: 12px;
+            color: #888;
+        }
+        .rent-item__price-label {
+            position: absolute;
+            right: 0px;
+            bottom: 5px;
+            background-color: #333;
+            opacity: 0.7;
+            color: #fff;
+            padding: 0px 6px;
+        }
+        .rent-item__tag {
+            padding: 3px;
+            font-size: 5px;
+            height: auto;
+            margin-right: 5px;
+            line-height: normal;
+        }
+    </style>
+</block>
+<block name="main">
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="left">
+                <a href="__ROOT__/" class="link back">
+                    <i class="fa fa-angle-left"></i>
+                    <span>返回</span>
+                </a>
+            </div>
+            <div class="center">
+                <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>
+            </div>
+            <div class="right">
+                <a href="#" class="open-panel icon-only" data-panel="right" >
+                    <i class="fa fa-list"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content infinite-scroll">
+            <!-- <php>dump($data_list);</php> -->
+            <!-- 房屋列表 -->
+            <div class="content-block no-margin">
+                <div class="row rent-list">
+                    <volist name="data_list" id="vo" empty='您暂时没有收藏的房源哦!'>
+                        <div class="col-50">
+                            <div class="rent-item hightlight_marker" data-marker="my-marker{$vo.id}" data-gps="{$vo['address_gps']}">
+                                <div class="rent-item__img_compose">
+                                    <a href="{:U('Rent/Index/detail', array('id' => $vo['id']))}" target="_blank">
+                                        <img class='rent-item__img_cover' src="{$vo.cover|get_cover='cover'}" >
+                                    </a>
+                                    <div class="rent-item__price-label">
+                                        <small>$</small>{$vo.min_price|number_format}-<small>$</small>{$vo.max_price|number_format}
+                                    </div>
+                                </div>
+                                <div class="rent-item__compose">
+                                    <span class="rent-item__title">{$vo['title']}</span>
+                                    <div class="rent-item__bedroom">
+                                        {$vo['min_bedroom_count']}-{$vo['max_bedroom_count']}
+                                    </div>
+                                    <div>
+                                        <volist name="vo['tags']" id='v'>
+                                            <a class="button button-orange rent-item__tag">{$v}</a>
+                                        </volist>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </volist>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script position='page'>
+        $(function(){
+            var request = new Object();
+            var target = location.href,loading = false;
+            request['p'] = 2;
+            $('.infinite-scroll').on('infinite', function () {
+                if (loading) return;
+                loading = true;
+                $.get(target,request,function(data) {
+                    loading = false;
+                    if(!data.status) {
+                        myApp.detachInfiniteScroll('.infinite-scroll');
+                        return;
+                    }
+                    request['p'] ++;
+                    var inner = create_dom(data.data);
+                    $('.rent-list').append(inner);
+                    create_marker(data.data);
+                });
+            });
+        });
+        function create_dom(data) {
+            var inner = '';
+            for(var i in data) {
+                var x = data[i];
+                inner += '<div class="col-50">'
+                +'<div class="rent-item">'
+                    +'<div class="rent-item__img_compose">'
+                        +'<a href="'+x.infowindow_href+'" target="_blank">'
+                            +'<img class="rent-item__img_cover" src="'+x.cover_url+'" ></a>'
+                        +'<div class="rent-item__price-label">'
+                            +'<small>$</small>'+x.min_price+'-<small>$</small>'+x.max_price+'</div>'
+                    +'</div>'
+                    +'<div class="rent-item__compose">'
+                        +'<span class="rent-item__title">'+x.title+'</span>'
+                        +'<div class="rent-item__bedroom">'+x.min_bedroom_count+'-'+x.max_bedroom_count+'</div><div>';
+                for(var j in x.tags) {
+                    inner += '<a class="button button-orange rent-item__tag">'+j+'</a>';
+                }
+
+                inner += '</div></div></div></div>';
+            }
+            return inner;
+        }
+    </script>
+</block>

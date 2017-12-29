@@ -1,0 +1,190 @@
+<extend name="$_home_public_layout"/>
+
+<block name='style'>
+	<style position='page'>
+		.find-roommate-modal__avatar {
+		    width: 50px;
+		    height: 50px;
+		    border-radius: 100%;
+		}
+		.find-roommate-modal__avatar-container {
+		    padding: 20px 0;
+		}
+	</style>
+</block>
+
+<block name='main'>
+	<div class="navbar">
+	    <div class="navbar-inner">
+	        <div class="left">
+	            <a href="__ROOT__/" class="link back">
+	                <i class="fa fa-angle-left"></i>
+	                <span>返回</span>
+	            </a>
+	        </div>
+	        <div class="center">
+             <php>if(C('WEB_SITE_LOGO')):</php>
+                    <img class="logo" src="{$Think.config.WEB_SITE_LOGO|get_cover}">
+                <php>else:</php>
+                    {:C('WEB_SITE_TITLE')}
+                <php>endif;</php>   
+            </div>
+	        <div class="right">
+	            <a href="#" class="open-panel icon-only" data-panel="right" >
+	                <i class="fa fa-list"></i>
+	            </a>
+	        </div>
+	    </div>
+	</div>
+	<div data-page="index" class="page page-on-center no-toolbar">
+        <div class="page-content">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-content-inner">
+                        <h3 class="text-center">请填写以下信息，小e客服会通过添加您的微信邀请您到该公寓的潜在室友微信群</h3>
+                        <form action="{:U('Rent/Roommate/index',array('rid'=>$_GET['rid']))}" method="POST" class="form-roommate">
+                            <div class="list-block inset find-roommate-modal">
+                                <ul>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">昵称</div>
+                                                <div class="item-input">
+                                                    <input type="text" name="nickname" value="{$info['nickname']}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">性别</div>
+                                                <div class="item-input">
+                                                    <select name="gender">
+                                                        <option value="1" <?php if($info['gender'] == '1') echo'checked'; ?>>男</option>
+                                                        <option value="-1" <?php if($info['gender'] == '-1') echo'checked'; ?>>女</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">微信号</div>
+                                                <div class="item-input">
+                                                    <input type="text" name="wechat" value='{$info["wechat"]}' />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">生日标签</div>
+                                                <div class="item-input">
+                                                    <input type="text" name="birthday_tag" value='{$info["birthday_tag"]}' placeholder="如：90后、00后" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">职业</div>
+                                                <div class="item-input">
+                                                    <input type="text" name="occupation" value='{$info["occupation"]}' placeholder="如：NYU学生、IT狗、投行">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">兴趣爱好</div>
+                                                <div class="item-input">
+                                                    <input type="text" name="hobby" value="{$info['hobby']}" placeholder="如：足球、狼人杀">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <!-- <li>
+                                        <div class="item-content">
+                                            <div class="item-inner">
+                                                <div class="item-title label">头像</div>
+                                                <div class="item-input">
+                                                    <div class="text-center find-roommate-modal__avatar-container">
+                                                        <present name='info["avatar"]'>
+                                                            <img src='{$info["avatar"]|get_cover="avatar"}' class="find-roommate-modal__avatar">
+                                                            <input type="hidden" name='avatar' value="{$info['avatar']}">
+                                                        <else/>
+                                                            <i class="fa fa-plus-circle" style="font-size:30px;"></i>
+                                                        </present>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li> -->
+                                    <li>
+                                        <div class="item-content">
+                                            <div class="item-inner" style="justify-content: space-around;margin:10px 0;">
+                                                <button type="submit" class="button button-block button-orange ajax-post" target-form="form-roommate">提交</button>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+</block>
+
+<block name='script'>
+	<script position="page" src='__PUBLIC__/libs/webuploader/webuploader.js'></script>
+	<script position='page'>
+		$(function(){
+			// 初始化头像上传
+		    var uploader = initial_uploader();
+            function initial_uploader () {
+                var uploader = WebUploader.create({
+                    auto: true,                                                                    // 选完文件后，是否自动上传
+                    duplicate: true,                                                               // 同一文件是否可以重复上传
+                    swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                    server: '{:U(MODULE_MARK."/Upload/upload", array("dir" => "image"))}',
+                    pick: '.find-roommate-modal__avatar-container',
+                    accept: {
+                        title: 'Images',
+                        extensions: 'gif,jpg,jpeg,bmp,png',
+                        mimeTypes: 'image/*'
+                    }
+                });
+                return uploader;
+            }
+		    uploader.on('uploadSuccess', function(file,response) {
+		        if(response.status == 0) {
+		            $.alertMessager('','图片上传失败！请重试！');
+		            return;
+		        }
+		        var img_obj = new Object();
+		        img_obj['class'] = 'find-roommate-modal__avatar';
+		        img_obj['src'] = response.url;
+		        img_obj['name'] = 'avatar';
+		        img_obj['value'] = response.id;
+                console.log(response);
+		        var inner = add_img_input(img_obj);
+		        $('.webuploader-pick').empty().append(inner);
+		    });
+		    uploader.on('uploadError', function(file,reason) {
+                console.log(reason);
+		        $.alertMessager('','图片上传失败！请重试！');
+		    });
+		});
+		function add_img_input(obj) {
+		    var inner = '<img class="'+obj.class+'" src="'+obj.src+'"/><input type="hidden" name="'+obj.name+'" value="'+obj.value+'"/>';
+		    return inner;
+		}
+	</script>
+</block>

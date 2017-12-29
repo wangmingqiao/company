@@ -1,0 +1,90 @@
+<extend name="$_home_public_layout"/>
+<block name="style">
+    <style type="text/css">
+        .grzx{
+            padding-top:15px;
+        }
+        .panel-touxiang{
+            border: 1px solid #999999;
+            border-radius: 0px;
+        }
+        .panel-grxz{
+            border: 1px solid #999999;
+            border-radius: 0px;
+        }
+        .panel-grxz .panel-heading{
+            height: 60px;
+            border-bottom: 1px solid #999999;
+            border-radius: 0px;
+        }
+        .panel-grxz .panel-heading p{
+            font-size: 18px;
+            color: #666666;
+            padding-top: 5px;
+            padding-left: 34px;
+        }
+        .house-list-title{
+            border: 1px solid #999999;
+        }
+        .house-list-title p {
+            font-size: 18px;
+            padding-left: 18px;
+            padding-top: 10px;
+            line-height: 17px;
+            white-space: nowrap;
+            width: 17em;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .house-list-title li{
+            color: #a9a9a9;
+            font-size: 14px;
+            padding-left: 22px;
+        }
+    </style>
+</block>
+<block name="script">
+    <script type="text/javascript">
+    </script>
+</block>
+<block name="jumbotron">
+</block>
+<block name="main">
+    <div class="grzx">
+        <div class="container">
+            <div class="col-md-3">
+                <div class="panel panel-touxiang">
+                    <div class="panel-body">
+                        <div class="text-center">
+                            <img class="avatar img-circle" style="width:188px;height:188px;" src="{$vo.avatar|get_cover='avatar'}">
+                            <a href="{:U('User/User/logout')}"><button class="btn btn-orange" style="margin-top:80px;width:191px;height:50px;">退出</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <div class="panel panel-grxz">
+                    <div class="panel-heading">
+                        <p>收藏的房源</p>
+                    </div>
+                    <div class="panel-body">
+                        <rent:mark_list name="mark_list">
+                            <div class="col-md-6">
+                                <div class="house-list-picture">
+                                    <img class="img-responsive" src="{mark_list.cover|get_cover='cover'}">
+                                </div>
+                                <div class="house-list-title">
+                                    <p>{$mark_list.title}</p>
+                                    <ul class="list-inline">
+                                        <li>{$mark_list.bathroom_num}间浴室</li>
+                                        <li>{$mark_list.bedroom_num}间卧室</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </rent:mark_list>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</block>

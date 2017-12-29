@@ -1,0 +1,766 @@
+<extend name="$_home_public_layout"/>
+
+<block name="style">
+    <style type="text/css">
+        .house-publish{
+        }
+        .house-publish-menu{
+            background-color: #dcdcdc;
+            height: 842px;
+        }
+        .house-publish-menu ul{
+            padding-top: 30px;
+        }
+        .house-publish-menu .list-unstyled li{
+            height: 40px;
+        }
+        .house-publish-menu .list-unstyled li a{
+            color: #000;
+            position: relative;
+            top:8px;
+            left:40px;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        .house-publish-menu .list-unstyled li:hover{
+            background-color: #d3d3d3;
+        }
+        .house-publish-detail-color{
+            background-color: #ffffff;
+            margin-left: -15px;
+            min-height: 842px;
+        }
+        .house-publish-detail{
+            padding-top: 26px;
+            margin-left: 50px;
+            width: 590px;
+            overflow: hidden;
+        }
+        .house-publish-detail input{
+            width: 590px;
+        }
+        .house-publish-detail .yxyj-radio p{
+            width: 156px;
+        }
+        .house-publish-detail .row input{
+            width: 100%;
+        }
+        .house-publish-detail .dropdown span{
+            position: absolute;
+            top:35px;
+            left:120px;
+        }
+        .house-publish-detail .dropdownn span{
+            position: absolute;
+            top:33px;
+            right: 45px;
+            color: #000;
+        }
+        .house-publish-detail .form_datetime{
+            width: 156px;
+        }
+        .container{
+            width: 980px;
+        }
+        .datetimepicker .table-condensed{
+            width: 228px;
+        }
+        #configuration-facility label{
+            margin-bottom: 64px;
+        }
+        .full{
+            height:176px;
+            width: 176px;
+            z-index: 100;
+            background-color: #f40;
+            position:absolute;
+            top:199px;
+            text-align: center;
+            font-family: Microsoft Yahei;
+            color: #ffffff;
+        }
+        .full .fa{
+            position: absolute;
+            top:11px;
+            left: 149px;
+            cursor: pointer;
+        }
+        .full h1{
+            padding-top: 20px;
+        }
+        .full p{
+            padding-top: 20px;
+        }
+        .region{
+            border: 2px solid #9b9b9b;
+            height:176px;
+            width: 176px;
+            color: #999999;
+            text-align: center;
+        }
+        .region img{
+            margin-top: 20px;
+        }
+        .region p{
+            position: relative;
+            font-size: 19px;
+            top:10px;
+        }
+        .region-arrow{
+            position:absolute;
+            top:199px;
+            left:240px;
+            border: 1px solid #999999;
+            z-index: 999;
+        }
+        .region-arrow .region-arrow-list{
+            text-align: center;
+            padding:0;
+            margin:0px;
+            background-color: #ffffff;
+        }
+        .region-arrow .region-arrow-list li{
+            padding: 3px 0px;
+            width: 143px;
+            height: 36px;
+            padding-top: 7px;
+            cursor: pointer;
+        }
+        .region-arrow .region-arrow-list li a{
+            height: 30px;
+            color: #000000;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .region-arrow .region-arrow-list li:hover,
+        .region-arrow-right-list li:hover{
+            background-color: #ff7733;
+            color: #fff;
+        }
+        .region-arrow .region-arrow-list li:hover a,
+        .region-arrow-right-list li:hover a{
+            background-color: #ff7733;
+            color: #fff;
+        }
+        .region-arrow-right{
+            position:absolute;
+            top:199px;
+            left:380px;
+            border: 1px solid #999999;
+            z-index: 999;
+            background-color: #ffffff;
+        }
+        .region-arrow-right-list li{
+            padding: 10px;
+            width: 186px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        .region-arrow-right-list li a{
+            color: #666666;
+            padding-left: 10px;
+            text-decoration: none;
+        }
+        #_upload_4 div{
+            height: 20px!important;
+            width: 56px!important;
+        }
+        .file-item img{
+            height: 120px;
+            width: 180px;
+        }
+    </style>
+</block>
+
+<block name="jumbotron">
+</block>
+
+<block name="main">
+    <div class="container house-publish">
+        <div class="col-xs-3">
+            <div class="house-publish-menu">
+                <ul class="list-unstyled" id="house-publish-menu">
+                    <li><a href="#house-information" data-toggle="tab">房源信息</a></li>
+                    <li><a href="#basic-information" data-toggle="tab">基本信息</a></li>
+                    <li><a href="#house-picture" data-toggle="tab">房源图片</a></li>
+                    <li><a href="#configuration-facility" data-toggle="tab">配置设施</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-xs-9 house-publish-detail-color">
+            <form action="{:U('Rent/Rent/add')}" method="post" class="add-form">
+                <div class="tab-content house-publish-detail">
+                    <div class="tab-pane fade in active" id="house-information">
+                        <div class="form-group">
+                            <label for="name">房源名称</label>
+                            <input type="text" class="form-control" id="name" name="title">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">房源编号</label>
+                            <input type="text" class="form-control" id="name" name="number">
+                        </div>
+                        <div class="form-group">
+                            <input class="suburb-input" type="text" name="suburb" style='display:none;'>
+                            <label for="name">房源区域</label>
+                            <div class="region region-qyzf">
+                                <img src="__HOME_IMG__/gps.png" width="80" height="95">
+                                <p>区域找房</p>
+                            </div>
+                            <div class="full" style="display:none;">
+                                <span class="fa fa-remove remove"></span>
+                                <h1></h1>
+                                <p></p>
+                            </div>
+                            <div class="region-arrow_action" style="display:none">
+                                <div class="region-arrow">
+                                    <ul class="list-unstyled region-arrow-list">
+                                        <volist name="suburb_list" id="fl">
+                                            <li class="tab-switch " data-toggle="tab" <?php echo'href="#region-'.$key.'"'; ?>><a class="first-level">{$fl.p}</a></li>
+                                        </volist>
+                                    </ul>
+                                </div>
+                                <div class="region-arrow-right tab-content">
+                                    <volist name="suburb_list" id='fl'>
+                                        <div class="tab-pane" id="region-{$key}">
+                                            <ul class="list-unstyled region-arrow-right-list">
+                                                <volist name="fl.c" id="sl">
+                                                    <li>
+                                                        <a class="second-level">{$sl.n}</a>
+                                                    </li>
+                                                </volist>
+                                            </ul>
+                                        </div>
+                                    </volist>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">房源坐标</label>
+                            <input type="hidden" class="form-control" name="address_gps">
+                            <div id="map" style="width:100%;height:300px;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">房源地址</label>
+                            <input type="text" class="form-control" id="name" name="address">
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-xs-4">
+                                <label for="name">卧室数量</label>
+                                <select class="form-control" name="bedroom_num">
+                                    <option value="studio">studio</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="4+">4+</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <label for="name">卫浴数量</label>
+                                <select class="form-control" name="bathroom_num">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="其他">其他</option>
+                                </select>
+                            </div>
+                            <div class="col-xs-4">
+                                <label for="name">月租价</label>
+                                <input type="text" class="form-control" id="name" placeholder="" name="price">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">房源描述</label>
+                            <textarea class="form-control" rows="3" name="description"></textarea>
+                        </div>
+                        <div style="float:right;margin-top:50px;">
+                            <a href="#basic-information" data-toggle="tab"><button style="width:127px;margin-bottom: 30px;" class="btn btn-orange">下一步</button></a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="basic-information">
+                        <div class="form-group">
+                            <label for="name">房源来源</label>
+                            <input type="text" class="form-control" id="name" placeholder="房东自有房源/转租房源" name="room_source">
+                        </div>
+                        <div class="form-group">
+                            <label for="name">租期类型</label>
+                            <div>
+                                <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                    <label for="gender1">
+                                        <input type="checkbox" id="gender1" class="checkbox" name="rentdate_type[]" value="长租（一年）">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>长租（一年）</p>
+                                    </label>
+                                </div>
+                                <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                    <label for="gender-1">
+                                        <input type="checkbox" id="gender-1" class="checkbox" name="rentdate_type[]" value="短租（一年以下）">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>短租（一年以下）</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">出租类型</label>
+                            <div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender2">
+                                        <input type="radio" id="gender2" class="checkbox" name="rent_type" value="整租">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>整租</p>
+                                    </label>
+                                </div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender-2">
+                                        <input type="radio" id="gender-2" class="checkbox" name="rent_type" value="合租">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>合租</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">房源类型</label>
+                            <div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender3">
+                                        <input type="radio" id="gender3" class="radio" name="source_type" value="公寓">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>公寓</p>
+                                    </label>
+                                </div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender-3">
+                                        <input type="radio" id="gender-3" class="radio" name="source_type" value="别墅">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>别墅</p>
+                                    </label>
+                                </div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender-33">
+                                        <input type="radio" id="gender-33" class="radio" name="source_type" value="Loft">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>Loft</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="name">有无家具</label>
+                            <div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender4">
+                                        <input type="radio" id="gender4" class="radio" name="furniture" value="有">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>有</p>
+                                    </label>
+                                </div>
+                                <div class="radio-inline cui-control cui-radio yxyj-radio">
+                                    <label for="gender-4">
+                                        <input type="radio" id="gender-4" class="radio" name="furniture" value="无">
+                                        <span class="cui-control-indicator"></span>
+                                        <p>无</p>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group dropdown">
+                            <label for="name">可出租日期</label>
+                            <input readonly size="16" type="text" class="form_datetime form-control dropdown-toggle" placeholder="请选择入住日期" name="rent_date">
+                            <span class="fa fa-calendar form-control-feedback" aria-hidden="true"></span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group dropdownn">
+                                    <label for="name">面积</label>
+                                    <input type="text" class="form-control" id="name" placeholder="" name="area_sqft">
+                                    <span>sq.ft</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group dropdownn">
+                                    <label for="name">层数</label>
+                                    <input type="text" class="form-control" id="name" placeholder="" name="area_floor">
+                                    <span>层</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="form-group dropdownn">
+                                    <label for="name">年代</label>
+                                    <input type="text" class="form-control" id="name" placeholder="" name="year">
+                                    <span>年</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="form-group dropdownn">
+                                    <label for="name">步行至地铁所需要的时间</label>
+                                    <input type="text" class="form-control" id="name" placeholder="" name="to_station">
+                                    <span>min</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="form-group" style="margin-top: 20px;">
+                                    <label for="video">视频地址</label>
+                                    <input type="text" class="form-control" id="name" name="video">
+                                </div>
+                            </div>
+                        </div>
+                        <div style="float:right;margin-top:50px;">
+                            <a href="#house-information" data-toggle="tab"><button style="width:127px;margin-bottom: 30px;" class="btn btn-default">上一步</button></a>
+                            <a href="#house-picture" data-toggle="tab"><button style="width:127px;margin-bottom: 30px;" class="btn btn-orange">下一步</button></a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="house-picture">
+
+                        <p>漂亮的照片能让你的照片脱颖而出</p>
+                        <p>支持JPG/PNG格式，大小控制在5M之内，请尽量提供不少于三张的房屋室内照片（如卧室、客厅、厨房、浴室等），为了保证房屋展示的美观性，图片尺寸尽量达到800*500（像素），首张照片会被设置为封面图</p>
+                        <div class="right row">
+                            <div id="_upload_box_4" class="wu-example">
+                                <!-- 放置缩略图 -->
+                                <div id="_upload_list_4" class="uploader-list col-xs-12 img-box">
+                                </div>
+                                <!--用来存放文件信息-->
+                                <div class="btns col-xs-12">
+                                    <input type="hidden" id="_upload_input_cover" name="cover" value="">
+                                    <input type="hidden" id="_upload_input_images" name="images" value="">
+                                    <div id="_upload_4" class="btn btn-primary webuploader-container">
+                                        选择图片
+                                    </div>
+                                </div>
+                            </div>
+
+                            <script type="text/javascript">
+                                $(function(){
+                                    var uploader__upload_4 = WebUploader.create({
+                                        auto: true,
+                                        duplicate: true,                                                               // 同一文件是否可以重复上传
+                                        swf: '__CUI__/swf/uploader.swf',                                               // swf文件路径
+                                        server: '{:U(MODULE_MARK."/Upload/upload", array("dir" => "image"))}',    // 文件接收服务端
+                                        pick: '#_upload_4',                                   // 选择文件的按钮
+                                        resize: false,                                                                 // 不压缩image, 默认如果是jpeg，文件上传前会压缩一把再上传！
+                                        fileNumLimit: 10,                                                             // 验证文件总数量, 超出则不允许加入队列
+                                        fileSingleSizeLimit:5*1024*1024,  // 验证单个文件大小是否超出限制, 超出则不允许加入队列
+                                        // 文件过滤
+                                        accept: {
+                                            title: 'Images',
+                                            extensions: 'gif,jpg,jpeg,bmp,png',
+                                            mimeTypes: 'image/*'
+                                        }
+                                    });
+                                    // 文件上传过程中创建进度条实时显示。
+                                    uploader__upload_4.on( 'uploadProgress', function( file, percentage ) {
+                                        var $li = $( '#_upload_preview_4'),
+                                            $percent = $li.find('.progress .progress-bar');
+                                        // 避免重复创建
+                                        if ( !$percent.length ) {
+                                            $percent = $('<div class="progress"><div class="progress-bar"></div></div>')
+                                                    .appendTo( $li )
+                                                    .find('.progress-bar');
+                                        }
+                                        $percent.css( 'width', percentage * 100 + '%' );
+                                    });
+
+                                    // 完成上传完了，成功或者失败，先删除进度条。
+                                    uploader__upload_4.on( 'uploadComplete', function( file ) {
+                                        $( '#_upload_preview_4' ).find('.progress').remove();
+                                    });
+
+                                    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+                                    uploader__upload_4.on( 'uploadSuccess', function( file , response) {
+                                        if(eval('response').status == 0){
+                                            $.alertMessager(response.info);
+                                        } else {
+                                            if($( '#_upload_input_images').val()){
+                                                var a = $( '#_upload_input_images').val();
+                                                $( '#_upload_input_images').val(a + ',' + response.id)
+                                            } else {
+                                                $( '#_upload_input_images' ).val(response.id);
+                                            }
+                                            if($( '#_upload_input_cover').val()){
+                                            } else {
+                                                $( '#_upload_input_cover' ).attr('value', response.id);
+                                            }
+                                            $( '#_upload_list_4').append('<div id="_upload_preview_4" class="col-xs-4 file-item thumbnail upload-state-done"><p style="display:none">' + response.id +'</p><i class="fa fa-times-circle remove-picture"></i><img src="'+ response.url +'"></div>');
+                                        }
+                                    });
+
+                                    // 文件上传失败，显示上传出错。
+                                    uploader__upload_4.on( 'uploadError', function(file){
+                                        $.alertMessager('error');
+                                        var $li = $( '#_upload_preview_4'),
+                                            $error = $li.find('div.error');
+                                        // 避免重复创建
+                                        if ( !$error.length ) {
+                                            $error = $('<div class="error"></div>').appendTo( $li );
+                                        }
+                                        $error.text('上传失败');
+                                    });
+
+                                    // 删除图片
+                                    $(document).on('click','.remove-picture',function(event){
+                                        event.preventDefault();
+                                        $(this).parent().remove();
+                                        var current_ids;
+                                        $(".file-item").each(function(index, el) {
+                                            if(current_ids){
+                                                current_ids = current_ids +',' + $(this).find('p').text();
+                                            } else {
+                                                current_ids = $(this).find('p').text();
+                                            }
+                                        });
+                                        $('#_upload_input_images').val(current_ids);
+                                        if(current_ids){
+                                            current_ids = current_ids.split(',');
+                                            var cover_id = current_ids[0];
+                                            $('#_upload_input_cover').val(cover_id.toString());
+                                        } else {
+                                            $('#_upload_input_cover').val('');
+                                        }
+                                    });
+                                });
+                            </script>
+                        </div>
+
+                        <div style="float:right;margin-top:50px;">
+                            <a href="#basic-information" data-toggle="tab"><button style="width:127px;" class="btn btn-default">上一步</button></a>
+                            <a href="#configuration-facility" data-toggle="tab"><button style="width:127px;" class="btn btn-orange">下一步</button></a>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="configuration-facility">
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="厨房">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>厨房</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="wifi">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>wifi</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="洗衣机">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>洗衣机</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="烘干机">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>烘干机</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="冰箱">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>冰箱</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="微波炉">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>微波炉</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="电视">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>电视</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="阳台">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>阳台</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="健身房">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>健身房</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="游泳池">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>游泳池</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="门卫">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>门卫</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="电梯">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>电梯</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="允许养宠物">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>允许养宠物</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="checkbox-inline cui-control cui-checkbox yxyj-radio">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="common[]" value="车位">
+                                    <span class="cui-control-indicator"></span>
+                                    <span>车位</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div style="float:right;margin-top:50px;">
+                            <a href="#house-picture" data-toggle="tab"><button style="width:127px;" class="btn btn-default">上一步</button></a>
+                            <button type="submit" style="width:127px;" class="btn btn-orange ajax-post" target-form="add-form">发布</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</block>
+
+<block name="script">
+    <script type="text/javascript">
+        //区域列表动作
+        $(".region-qyzf").mouseenter(function(){
+            $(".region-arrow_action").show();
+        });
+        $(".region-arrow_action").mouseleave(function(){
+            $(".region-arrow_action").hide();
+        });
+        $(".tab-switch").mouseenter(function(){
+            $(".region-arrow-right").show();
+            $(this).tab('show');
+        });
+        $(".region-arrow_action").mouseleave(function(){
+            $(".region-arrow-right").hide();
+        });
+        $('.first-level').click(function(event) {
+            $('.full').show();
+            $('.full h1').text($(this).text());
+            $('.full p').text('');
+            $('.suburb-input').val($(this).text());
+        });
+        $(".second-level").click(function(event){
+            $(".region-arrow_action").hide();
+            $(".full").show();
+            $(".full").children("p").text($(this).text());
+            $(".full").children("h1").text($(this).parents(".region-arrow_action").children(".region-arrow").find(".active").text());
+            $('.suburb-input').val($(".full").children("h1").text()+','+$(".full").children("p").text());
+        });
+        $(".remove").click(function(){
+            $(".full").hide();
+            $('.suburb-input').val('');
+        });
+        $(document).bind('click', function(event) {
+            $('.region-arrow_action').hide();
+        });
+
+        //日期选择器
+        $(".form_datetime").datetimepicker({
+            format: 'yyyy-mm-dd',
+            autoclose:true,
+            minView: 2
+        });
+        $('.glyphicon-arrow-left').addClass('fa').addClass('fa-arrow-left');
+        $('.glyphicon-arrow-right').addClass('fa').addClass('fa-arrow-right');
+
+        // mapbox
+        L.mapbox.accessToken = 'pk.eyJ1IjoiYmxpbmRzcG90IiwiYSI6ImNpbW9sdG42YzAwZzZ2a2t5NXY3aTZpbmgifQ.bK7d-lqGLQmZVe9Z2QHHEA';
+        var geocoder = L.mapbox.geocoder('mapbox.places');
+        var map = L.mapbox.map('map', 'mapbox.streets').setView([40.7, -73.9], 9);
+        var marker = L.marker([40.7, -73.9],{
+            icon: L.mapbox.marker.icon({
+                'marker-color': 'ff8888'
+            }),
+            draggable: true
+        }).addTo(map);
+
+        // 监听地址输入框
+        $('input[name="address"]').keyup(function(event) {
+            var address_data = $('input[name="address"]').val();
+            geocoder.query(address_data, showMap);
+        });
+
+        // 根据解析出的经纬度设置点的位置
+        function showMap(err, data) {
+            if (data.lbounds) {
+                map.fitBounds(data.lbounds);
+            } else if (data.latlng) {
+                map.setView([data.latlng[0], data.latlng[1]], 13);
+                marker.setLatLng([data.latlng[0], data.latlng[1]]);
+                set_address_gps(data.latlng);
+            }
+        }
+
+        marker.on('dragend',function(){
+            var latlng = marker.getLatLng();
+            set_address_gps(latlng);
+        });
+
+        map.on('click',function(e){
+            var c = e.latlng;
+            marker.setLatLng(c);
+            set_address_gps(c);
+        });
+
+        function set_address_gps(latlng){
+            latlng = latlng.toString();
+            console.log(latlng);
+            $('input[name="address_gps"]').val(latlng);
+            console.log($('input[name="address_gps"]').val());
+        }
+    </script>
+</block>
